@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model answer {
+  id                                       Int        @id @default(autoincrement())
+  avaliation                               Int
+  question                                 Int
+  item                                     Int
+  created_at                               DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at                               DateTime?  @default(now()) @db.Timestamp(6)
+  avaliation_answer_avaliationToavaliation avaliation @relation("answer_avaliationToavaliation", fields: [avaliation], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  item_answer_itemToitem                   item       @relation("answer_itemToitem", fields: [item], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  question_answer_questionToquestion       question   @relation("answer_questionToquestion", fields: [question], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model avaliation {
+  id                                                           Int                  @id @default(autoincrement())
+  title                                                        String               @db.VarChar(100)
+  notes                                                        String?              @db.VarChar(255)
+  client                                                       Int
+  specialist                                                   Int
+  test                                                         Int
+  created_at                                                   DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at                                                   DateTime?            @default(now()) @db.Timestamp(6)
+  answer_answer_avaliationToavaliation                         answer[]             @relation("answer_avaliationToavaliation")
+  client_avaliation_clientToclient                             client               @relation("avaliation_clientToclient", fields: [client], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  specialist_avaliation_specialistTospecialist                 specialist           @relation("avaliation_specialistTospecialist", fields: [specialist], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  test_avaliation_testTotest                                   test                 @relation("avaliation_testTotest", fields: [test], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  question_sugestion_question_sugestion_avaliationToavaliation question_sugestion[] @relation("question_sugestion_avaliationToavaliation")
+}
+
+model client {
+  id                                                 Int                 @id @default(autoincrement())
+  identifier                                         String              @unique @db.VarChar(30)
+  name                                               String?             @db.VarChar(100)
+  bio                                                String?             @db.VarChar(100)
+  imageurl                                           String?             @db.VarChar(100)
+  birthdate                                          DateTime?           @db.Date
+  code                                               String?             @db.VarChar(7)
+  created_at                                         DateTime?           @default(now()) @db.Timestamp(6)
+  updated_at                                         DateTime?           @default(now()) @db.Timestamp(6)
+  avaliation_avaliation_clientToclient               avaliation[]        @relation("avaliation_clientToclient")
+  client_guardian_client_guardian_clientToclient     client_guardian[]   @relation("client_guardian_clientToclient")
+  client_specialist_client_specialist_clientToclient client_specialist[] @relation("client_specialist_clientToclient")
+}
+
+model client_guardian {
+  id                                          Int       @id @default(autoincrement())
+  client                                      Int
+  guardian                                    Int
+  created_at                                  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at                                  DateTime? @default(now()) @db.Timestamp(6)
+  client_client_guardian_clientToclient       client    @relation("client_guardian_clientToclient", fields: [client], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  guardian_client_guardian_guardianToguardian guardian  @relation("client_guardian_guardianToguardian", fields: [guardian], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model client_specialist {
+  id                                                  Int        @id @default(autoincrement())
+  client                                              Int
+  specialist                                          Int
+  created_at                                          DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at                                          DateTime?  @default(now()) @db.Timestamp(6)
+  client_client_specialist_clientToclient             client     @relation("client_specialist_clientToclient", fields: [client], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  specialist_client_specialist_specialistTospecialist specialist @relation("client_specialist_specialistTospecialist", fields: [specialist], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model council {
+  id                                                     Int                  @id @default(autoincrement())
+  name                                                   String?              @db.VarChar(100)
+  created_at                                             DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at                                             DateTime?            @default(now()) @db.Timestamp(6)
+  specialist_council_specialist_council_councilTocouncil specialist_council[] @relation("specialist_council_councilTocouncil")
+}
+
+model domain {
+  id                                             Int               @id @default(autoincrement())
+  name                                           String            @db.VarChar(100)
+  description                                    String            @db.VarChar
+  created_at                                     DateTime?         @default(now()) @db.Timestamp(6)
+  updated_at                                     DateTime?         @default(now()) @db.Timestamp(6)
+  question_domain_question_domain_domainTodomain question_domain[] @relation("question_domain_domainTodomain")
+}
+
+model guardian {
+  id                                                 Int               @id @default(autoincrement())
+  identifier                                         String            @unique @db.VarChar(30)
+  name                                               String?           @db.VarChar(100)
+  bio                                                String?           @db.VarChar(100)
+  email                                              String            @unique @db.VarChar(100)
+  password                                           String            @db.VarChar
+  imageurl                                           String?           @db.VarChar
+  birthdate                                          DateTime?         @db.Date
+  created_at                                         DateTime?         @default(now()) @db.Timestamp(6)
+  updated_at                                         DateTime?         @default(now()) @db.Timestamp(6)
+  client_guardian_client_guardian_guardianToguardian client_guardian[] @relation("client_guardian_guardianToguardian")
+}
+
+model item {
+  id                               Int       @id @default(autoincrement())
+  content                          String    @db.VarChar
+  number                           Int
+  score                            Decimal?  @db.Decimal(3, 2)
+  question                         Int
+  created_at                       DateTime? @default(now()) @db.Timestamp(6)
+  updated_at                       DateTime? @default(now()) @db.Timestamp(6)
+  answer_answer_itemToitem         answer[]  @relation("answer_itemToitem")
+  question_item_questionToquestion question  @relation("item_questionToquestion", fields: [question], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model question {
+  id                                                       Int                  @id @default(autoincrement())
+  content                                                  String               @db.VarChar
+  number                                                   Int
+  test                                                     Int
+  created_at                                               DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at                                               DateTime?            @default(now()) @db.Timestamp(6)
+  answer_answer_questionToquestion                         answer[]             @relation("answer_questionToquestion")
+  item_item_questionToquestion                             item[]               @relation("item_questionToquestion")
+  test_question_testTotest                                 test                 @relation("question_testTotest", fields: [test], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  question_domain_question_domain_questionToquestion       question_domain[]    @relation("question_domain_questionToquestion")
+  question_sugestion_question_sugestion_questionToquestion question_sugestion[] @relation("question_sugestion_questionToquestion")
+}
+
+model question_domain {
+  id                                          Int       @id @default(autoincrement())
+  domain                                      Int
+  question                                    Int
+  created_at                                  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at                                  DateTime? @default(now()) @db.Timestamp(6)
+  domain_question_domain_domainTodomain       domain    @relation("question_domain_domainTodomain", fields: [domain], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  question_question_domain_questionToquestion question  @relation("question_domain_questionToquestion", fields: [question], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model question_sugestion {
+  id                                                   Int        @id @default(autoincrement())
+  avaliation                                           Int
+  question                                             Int
+  created_at                                           DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at                                           DateTime?  @default(now()) @db.Timestamp(6)
+  avaliation_question_sugestion_avaliationToavaliation avaliation @relation("question_sugestion_avaliationToavaliation", fields: [avaliation], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  question_question_sugestion_questionToquestion       question   @relation("question_sugestion_questionToquestion", fields: [question], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model specialist {
+  id                                                               Int                    @id @default(autoincrement())
+  identifier                                                       String                 @unique @db.VarChar(30)
+  name                                                             String?                @db.VarChar(100)
+  bio                                                              String?                @db.VarChar(100)
+  crm                                                              String?                @db.VarChar(100)
+  email                                                            String                 @unique @db.VarChar(100)
+  password                                                         String                 @db.VarChar
+  imageurl                                                         String?                @db.VarChar
+  birthdate                                                        DateTime?              @db.Date
+  created_at                                                       DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at                                                       DateTime?              @default(now()) @db.Timestamp(6)
+  avaliation_avaliation_specialistTospecialist                     avaliation[]           @relation("avaliation_specialistTospecialist")
+  client_specialist_client_specialist_specialistTospecialist       client_specialist[]    @relation("client_specialist_specialistTospecialist")
+  specialist_council_specialist_council_specialistTospecialist     specialist_council[]   @relation("specialist_council_specialistTospecialist")
+  specialist_specialty_specialist_specialty_specialistTospecialist specialist_specialty[] @relation("specialist_specialty_specialistTospecialist")
+}
+
+model specialist_council {
+  id                                                   Int        @id @default(autoincrement())
+  specialist                                           Int
+  council                                              Int
+  created_at                                           DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at                                           DateTime?  @default(now()) @db.Timestamp(6)
+  council_specialist_council_councilTocouncil          council    @relation("specialist_council_councilTocouncil", fields: [council], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  specialist_specialist_council_specialistTospecialist specialist @relation("specialist_council_specialistTospecialist", fields: [specialist], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model specialist_specialty {
+  id                                                     Int        @id @default(autoincrement())
+  specialist                                             Int
+  specialty                                              Int
+  created_at                                             DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at                                             DateTime?  @default(now()) @db.Timestamp(6)
+  specialist_specialist_specialty_specialistTospecialist specialist @relation("specialist_specialty_specialistTospecialist", fields: [specialist], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  specialty_specialist_specialty_specialtyTospecialty    specialty  @relation("specialist_specialty_specialtyTospecialty", fields: [specialty], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model specialty {
+  id                                                             Int                    @id @default(autoincrement())
+  name                                                           String?                @db.VarChar(100)
+  created_at                                                     DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at                                                     DateTime?              @default(now()) @db.Timestamp(6)
+  specialist_specialty_specialist_specialty_specialtyTospecialty specialist_specialty[] @relation("specialist_specialty_specialtyTospecialty")
+}
+
+model test {
+  id                               Int          @id @default(autoincrement())
+  name                             String       @db.VarChar(100)
+  imageurl                         String?      @db.VarChar
+  description                      String       @db.VarChar(255)
+  created_at                       DateTime?    @default(now()) @db.Timestamp(6)
+  updated_at                       DateTime?    @default(now()) @db.Timestamp(6)
+  avaliation_avaliation_testTotest avaliation[] @relation("avaliation_testTotest")
+  question_question_testTotest     question[]   @relation("question_testTotest")
+}

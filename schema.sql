@@ -1,0 +1,178 @@
+CREATE TABLE council (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE specialty (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE guardian (
+    id SERIAL PRIMARY KEY,
+    identifier VARCHAR(30) UNIQUE NOT NULL,
+    name VARCHAR(100),
+    bio VARCHAR(100),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR NOT NULL,
+    imageUrl VARCHAR,
+    birthdate DATE, 
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE client (
+    id SERIAL PRIMARY KEY,
+    identifier VARCHAR(30) UNIQUE NOT NULL,
+    name VARCHAR(100),
+    bio VARCHAR(100),
+    imageUrl VARCHAR(100),
+    birthdate DATE,
+    code VARCHAR(7), 
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE specialist (
+    id SERIAL PRIMARY KEY,
+    identifier VARCHAR(30) UNIQUE NOT NULL,
+    name VARCHAR(100),
+    bio VARCHAR(100),
+    crm VARCHAR(100),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR NOT NULL,
+    imageUrl VARCHAR,
+    birthdate DATE,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE specialist_specialty (
+    id SERIAL PRIMARY KEY,
+    specialist INT NOT NULL,
+    specialty INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (specialist) REFERENCES specialist(id) ON DELETE CASCADE,
+    FOREIGN KEY (specialty) REFERENCES specialty(id) ON DELETE CASCADE
+);
+
+CREATE TABLE specialist_council (
+    id SERIAL PRIMARY KEY,
+    specialist INT NOT NULL,
+    council INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (specialist) REFERENCES specialist(id) ON DELETE CASCADE,
+    FOREIGN KEY (council) REFERENCES council(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE client_guardian (
+    id SERIAL PRIMARY KEY,
+    client INT NOT NULL,
+    guardian INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client) REFERENCES Client(id) ON DELETE CASCADE,
+    FOREIGN KEY (guardian) REFERENCES Guardian(id) ON DELETE CASCADE
+);
+
+CREATE TABLE client_specialist (
+    id SERIAL PRIMARY KEY,
+    client INT NOT NULL,
+    specialist INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client) REFERENCES Client(id) ON DELETE CASCADE,
+    FOREIGN KEY (specialist) REFERENCES Specialist(id) ON DELETE CASCADE
+);
+
+CREATE TABLE test (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    imageurl VARCHAR,
+    description VARCHAR(255) NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE domain (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE question (
+    id SERIAL PRIMARY KEY,
+    content VARCHAR NOT NULL,
+    number INT NOT NULL,
+    test INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (test) REFERENCES Test(id)
+);
+
+CREATE TABLE question_domain (
+    id SERIAL PRIMARY KEY,
+    domain INT NOT NULL,
+    question INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (domain) REFERENCES domain(id),
+    FOREIGN KEY (question) REFERENCES question(id) on delete cascade 
+);
+
+CREATE TABLE item (
+    id SERIAL PRIMARY KEY,
+    content VARCHAR NOT NULL,
+    number INT NOT NULL,
+    score DECIMAL(3, 2),
+    question INT NOT NULL,
+    FOREIGN KEY (question) REFERENCES question(id),
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE avaliation (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    notes VARCHAR(255),
+    client INT NOT NULL,
+    specialist INT NOT NULL,
+    test INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client) REFERENCES Client(id) ON DELETE CASCADE,
+    FOREIGN KEY (specialist) REFERENCES Specialist(id),
+    FOREIGN KEY (test) REFERENCES Test(id)
+);
+
+
+CREATE TABLE answer (
+    id SERIAL PRIMARY KEY,
+    avaliation INT NOT NULL,
+    question INT NOT NULL,
+    item INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (avaliation) REFERENCES Avaliation(id) ON DELETE CASCADE,
+    FOREIGN KEY (question) REFERENCES Question(id),
+    FOREIGN KEY (item) REFERENCES Item(id)
+);
+
+CREATE TABLE question_sugestion (
+    id SERIAL PRIMARY KEY,
+    avaliation INT NOT NULL,
+    question INT NOT NULL,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Updated_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (avaliation) REFERENCES Avaliation(id) ON DELETE CASCADE,
+    FOREIGN KEY (question) REFERENCES Question(id) 
+);
