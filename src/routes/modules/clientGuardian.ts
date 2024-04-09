@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Client_GuardianController } from "../../controllers/client_Guardian";
+import { Client_GuardianController } from "../../controllers/clientGuardian";
 import { resolver } from "../../utils/routeAdapters";
 import { body, param, query } from 'express-validator';
 

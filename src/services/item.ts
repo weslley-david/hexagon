@@ -6,15 +6,15 @@ export class ItemService {
         private itemRepository: ItemRepository = new ItemRepository()
     ) { }
     
-    deleteItem = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.itemRepository.deleteItem(id);
     }
 
-    detailItem = async (id: number) => {
+    detail = async (id: number) => {
         const item: item = await this.itemRepository.getItemById(id)
         return (item)
     }
-    updateItem = async (id: number, content: string, number: number, score: number, question: number): Promise<item> => {
+    update = async (id: number, content: string, number: number, score: number, question: number): Promise<item> => {
         return await this.itemRepository.updateItem(id, content, number, score, question );
     }
 
@@ -23,7 +23,7 @@ export class ItemService {
         return (item)
     }
 
-    createItem = async ( content: string, number: number, score: number, question: number) => {
+    create = async ( content: string, number: number, score: number, question: number) => {
         const item: item = await this.itemRepository.createItem(content, number, score, question)
         return (item)
     }

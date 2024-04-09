@@ -6,15 +6,15 @@ export class AvaliationService {
         private avaliationRepository: AvaliationRepository = new AvaliationRepository()
     ) { }
 
-    deleteAvaliation = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.avaliationRepository.deleteAvaliation(id);
     }
 
-    detailAvaliation = async (id: number) => {
+    detail = async (id: number) => {
         const avaliation: avaliation = await this.avaliationRepository.getAvaliationById(id)
         return (avaliation)
     }
-    updateAvaliation = async (id: number, title: string,
+    update = async (id: number, title: string,
         notes: string,
         client: number,
         specialist: number,
@@ -27,7 +27,7 @@ export class AvaliationService {
         return (avaliation)
     }
 
-    createAvaliation = async (
+    create = async (
         title: string,
         notes: string,
         client: number,

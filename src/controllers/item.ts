@@ -21,7 +21,7 @@ export class ItemController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const council = await this.itemService.detailItem(parseInt(id));
+        const council = await this.itemService.detail(parseInt(id));
         return res.json(council).status(200);
     }
 
@@ -31,7 +31,7 @@ export class ItemController {
             throw new RequestError('Wrong form fields', validation_result);
         }
         const { content, number, score, question} = req.body;
-        const result = await this.itemService.createItem(
+        const result = await this.itemService.create(
             content, parseInt(number), parseInt(score), parseInt(question)
         );
 
@@ -46,7 +46,7 @@ export class ItemController {
         const {content, number, score, question} = req.body;
         const id = req.params.id;
 
-        const result = await this.itemService.updateItem(
+        const result = await this.itemService.update(
             parseInt(id),
             content, number, score, question
         );
@@ -60,7 +60,7 @@ export class ItemController {
         }
 
         const { id } = req.params;
-        await this.itemService.deleteItem(parseInt(id));
+        await this.itemService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

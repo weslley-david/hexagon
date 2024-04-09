@@ -6,15 +6,15 @@ export class DomainService {
         private domainRepository: DomainRepository = new DomainRepository()
     ) { }
     
-    deleteDomain = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.domainRepository.deleteDomain(id);
     }
 
-    detailDomain = async (id: number) => {
+    detail = async (id: number) => {
         const domain: domain = await this.domainRepository.getDomainById(id)
         return (domain)
     }
-    updateDomain = async (id: number, name: string, description: string): Promise<domain> => {
+    update = async (id: number, name: string, description: string): Promise<domain> => {
         return await this.domainRepository.updateDomain(id, name, description);
     }
 
@@ -23,7 +23,7 @@ export class DomainService {
         return (domain)
     }
 
-    createDomain = async ( name: string, description: string) => {
+    create = async ( name: string, description: string) => {
         const domain: domain = await this.domainRepository.createDomain(name, description)
         return (domain)
     }

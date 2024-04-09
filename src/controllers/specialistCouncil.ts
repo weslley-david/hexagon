@@ -1,11 +1,11 @@
 import { validationResult } from "express-validator";
-import { Client_SpecialistService  } from "../services/client_specialist";
+import { SpecialistCouncilService  } from "../services/specialistCouncil";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
 
-export class Client_SpecialistController {
+export class Specialist_CouncilController {
     constructor(
-        private client_SpecialistService: Client_SpecialistService = new Client_SpecialistService()
+        private specialist_CouncilService: SpecialistCouncilService = new SpecialistCouncilService()
     ) { }
 
     list = async (req: Request, res: Response) => {
@@ -15,13 +15,13 @@ export class Client_SpecialistController {
         }
 
         const { skip, take } = req.query;
-        const result = await this.client_SpecialistService.list(parseInt(skip as string), parseInt(take as string));
+        const result = await this.specialist_CouncilService.list(parseInt(skip as string), parseInt(take as string));
         return res.json(result).status(200);
     };
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const client_specialist = await this.client_SpecialistService.detailClient_Specialist(parseInt(id));
+        const client_specialist = await this.specialist_CouncilService.detail(parseInt(id));
         return res.json(client_specialist).status(200);
     }
 
@@ -30,11 +30,12 @@ export class Client_SpecialistController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const { specialist, client} = req.body;
+        const { specialist, council} = req.body;
 
-        const result = await this.client_SpecialistService.createClient_Specialist(
-            parseInt(client),
-            parseInt(specialist)
+        const result = await this.specialist_CouncilService.create(
+            parseInt(specialist),
+            parseInt(council)
+            
         );
 
         return res.json(result).status(201);
@@ -45,13 +46,13 @@ export class Client_SpecialistController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const {client, specialist} = req.body;
+        const {council, specialist} = req.body;
         const id = req.params.id;
 
-        const result = await this.client_SpecialistService.updateClient_Specialist(
+        const result = await this.specialist_CouncilService.update(
             parseInt(id),
-            parseInt(client),
-            parseInt(specialist)
+            parseInt(specialist),
+            parseInt(council)
         );
 
         return res.json(result).status(201);
@@ -63,7 +64,7 @@ export class Client_SpecialistController {
         }
 
         const { id } = req.params;
-        await this.client_SpecialistService.deleteClient_Specialist(parseInt(id));
+        await this.specialist_CouncilService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

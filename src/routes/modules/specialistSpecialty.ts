@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Specialist_SpecialtyController } from "../../controllers/specialist_Specialty";
+import { Specialist_SpecialtyController } from "../../controllers/specialistSpecialty";
 import { resolver } from "../../utils/routeAdapters";
 import { body, param, query } from 'express-validator';
 

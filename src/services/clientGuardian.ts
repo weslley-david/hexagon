@@ -1,12 +1,12 @@
 import { client_guardian } from "@prisma/client"
-import { Client_GuardianRepository } from "../entities/repository/client_guardian"
+import { Client_GuardianRepository } from "../entities/repository/clientGuardian"
 
-export class Client_GuardianService {
+export class ClientGuardianService {
     constructor(
         private client_GuardianRepository: Client_GuardianRepository = new Client_GuardianRepository()
     ) { }
     
-    deleteClient_Guardian = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.client_GuardianRepository.deleteClient_Guardian(id);
     }
 

@@ -1,11 +1,11 @@
 import { validationResult } from "express-validator";
-import { Specialist_CouncilService  } from "../services/specialist_council";
+import { QuestionSugestionService } from "../services/questionSugestion";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
 
-export class Specialist_CouncilController {
+export class Question_SugestionController {
     constructor(
-        private specialist_CouncilService: Specialist_CouncilService = new Specialist_CouncilService()
+        private question_SugestionService: QuestionSugestionService = new QuestionSugestionService()
     ) { }
 
     list = async (req: Request, res: Response) => {
@@ -15,14 +15,14 @@ export class Specialist_CouncilController {
         }
 
         const { skip, take } = req.query;
-        const result = await this.specialist_CouncilService.list(parseInt(skip as string), parseInt(take as string));
+        const result = await this.question_SugestionService.list(parseInt(skip as string), parseInt(take as string));
         return res.json(result).status(200);
     };
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const client_specialist = await this.specialist_CouncilService.detailSpecialist_Council(parseInt(id));
-        return res.json(client_specialist).status(200);
+        const guardian = await this.question_SugestionService.detail(parseInt(id));
+        return res.json(guardian).status(200);
     }
 
     create = async (req: Request, res: Response) => {
@@ -30,12 +30,11 @@ export class Specialist_CouncilController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const { specialist, council} = req.body;
-
-        const result = await this.specialist_CouncilService.createSpecialist_Council(
-            parseInt(specialist),
-            parseInt(council)
-            
+        const { question, avaliation} = req.body;
+        
+        const result = await this.question_SugestionService.create(
+            parseInt(question),
+            parseInt(avaliation)
         );
 
         return res.json(result).status(201);
@@ -46,13 +45,13 @@ export class Specialist_CouncilController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const {council, specialist} = req.body;
+        const {avaliation, question} = req.body;
         const id = req.params.id;
 
-        const result = await this.specialist_CouncilService.updateSpecialist_Council(
+        const result = await this.question_SugestionService.update(
             parseInt(id),
-            parseInt(specialist),
-            parseInt(council)
+            parseInt(avaliation),
+            parseInt(question)
         );
 
         return res.json(result).status(201);
@@ -64,7 +63,7 @@ export class Specialist_CouncilController {
         }
 
         const { id } = req.params;
-        await this.specialist_CouncilService.deleteSpecialist_Council(parseInt(id));
+        await this.question_SugestionService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

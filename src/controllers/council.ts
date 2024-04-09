@@ -21,7 +21,7 @@ export class CouncilController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const council = await this.councilService.detailCouncil(parseInt(id));
+        const council = await this.councilService.detail(parseInt(id));
         return res.json(council).status(200);
     }
 
@@ -31,7 +31,7 @@ export class CouncilController {
             throw new RequestError('Wrong form fields', validation_result);
         }
         const { name} = req.body;
-        const result = await this.councilService.createCouncil(
+        const result = await this.councilService.create(
             name
         );
 
@@ -46,7 +46,7 @@ export class CouncilController {
         const {name} = req.body;
         const id = req.params.id;
 
-        const result = await this.councilService.updateCouncil(
+        const result = await this.councilService.update(
             parseInt(id),
             name
         );
@@ -60,7 +60,7 @@ export class CouncilController {
         }
 
         const { id } = req.params;
-        await this.councilService.deleteCouncil(parseInt(id));
+        await this.councilService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

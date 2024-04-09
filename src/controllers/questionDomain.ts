@@ -1,11 +1,11 @@
 import { validationResult } from "express-validator";
-import { Question_SugestionService } from "../services/question_sugestion";
+import { QuestionDomainService  } from "../services/questionDomain";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
 
-export class Question_SugestionController {
+export class Question_DomainController {
     constructor(
-        private question_SugestionService: Question_SugestionService = new Question_SugestionService()
+        private question_DomainService: QuestionDomainService = new QuestionDomainService()
     ) { }
 
     list = async (req: Request, res: Response) => {
@@ -15,14 +15,14 @@ export class Question_SugestionController {
         }
 
         const { skip, take } = req.query;
-        const result = await this.question_SugestionService.list(parseInt(skip as string), parseInt(take as string));
+        const result = await this.question_DomainService.list(parseInt(skip as string), parseInt(take as string));
         return res.json(result).status(200);
     };
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const guardian = await this.question_SugestionService.detailQuestion_Avaliation(parseInt(id));
-        return res.json(guardian).status(200);
+        const question_Domain = await this.question_DomainService.detail(parseInt(id));
+        return res.json(question_Domain).status(200);
     }
 
     create = async (req: Request, res: Response) => {
@@ -30,11 +30,11 @@ export class Question_SugestionController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const { question, avaliation} = req.body;
-        
-        const result = await this.question_SugestionService.createQuestion_Avaliation(
+        const { question, domain} = req.body;
+
+        const result = await this.question_DomainService.create(
             parseInt(question),
-            parseInt(avaliation)
+            parseInt(domain)
         );
 
         return res.json(result).status(201);
@@ -45,13 +45,13 @@ export class Question_SugestionController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const {avaliation, question} = req.body;
+        const {question, domain} = req.body;
         const id = req.params.id;
 
-        const result = await this.question_SugestionService.updateQuestion_Avaliation(
+        const result = await this.question_DomainService.update(
             parseInt(id),
-            parseInt(avaliation),
-            parseInt(question)
+            parseInt(question),
+            parseInt(domain)
         );
 
         return res.json(result).status(201);
@@ -63,7 +63,7 @@ export class Question_SugestionController {
         }
 
         const { id } = req.params;
-        await this.question_SugestionService.deleteQuestion_Avaliation(parseInt(id));
+        await this.question_DomainService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

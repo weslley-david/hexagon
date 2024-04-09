@@ -1,20 +1,20 @@
 import { client_specialist } from "@prisma/client"
-import { Client_SpecialistRepository } from "../entities/repository/client_specialist"
+import { Client_SpecialistRepository } from "../entities/repository/clientSpecialist"
 
-export class Client_SpecialistService {
+export class ClientSpecialistService {
     constructor(
         private client_SpecialistRepository: Client_SpecialistRepository = new Client_SpecialistRepository()
     ) { }
     
-    deleteClient_Specialist = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.client_SpecialistRepository.deleteClient_Specialist(id);
     }
 
-    detailClient_Specialist = async (id: number) => {
+    detail = async (id: number) => {
         const client: client_specialist = await this.client_SpecialistRepository.getClient_SpecialistById(id)
         return (client)
     }
-    updateClient_Specialist = async (id: number, client: number, specialist: number): Promise<client_specialist> => {
+    update = async (id: number, client: number, specialist: number): Promise<client_specialist> => {
         return await this.client_SpecialistRepository.updateClient_Specialist(id, client, specialist);
     }
 
@@ -23,7 +23,7 @@ export class Client_SpecialistService {
         return (client)
     }
 
-    createClient_Specialist = async (  client: number, specialist: number) => {
+    create = async (  client: number, specialist: number) => {
         const client_specialist: client_specialist = await this.client_SpecialistRepository.createClient_Specialist(client, specialist)
         return (client_specialist)
     }

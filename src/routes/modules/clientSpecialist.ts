@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Client_SpecialistController } from "../../controllers/client_Specialist";
+import { Client_SpecialistController } from "../../controllers/clientSpecialist";
 import { resolver } from "../../utils/routeAdapters";
 import { body, param, query } from 'express-validator';
 

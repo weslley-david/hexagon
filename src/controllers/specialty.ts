@@ -21,7 +21,7 @@ export class SpecialtyController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const specialty = await this.specialtyService.detailSpecialty(parseInt(id));
+        const specialty = await this.specialtyService.detail(parseInt(id));
         return res.json(specialty).status(200);
     }
 
@@ -31,7 +31,7 @@ export class SpecialtyController {
             throw new RequestError('Wrong form fields', validation_result);
         }
         const { name} = req.body;
-        const result = await this.specialtyService.createSpecialty(
+        const result = await this.specialtyService.create(
             name
         );
 
@@ -46,7 +46,7 @@ export class SpecialtyController {
         const {name} = req.body;
         const id = req.params.id;
 
-        const result = await this.specialtyService.updateSpecialty(
+        const result = await this.specialtyService.update(
             parseInt(id),
             name
         );
@@ -60,7 +60,7 @@ export class SpecialtyController {
         }
 
         const { id } = req.params;
-        await this.specialtyService.deleteSpecialty(parseInt(id));
+        await this.specialtyService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

@@ -6,15 +6,15 @@ export class TestService {
         private testRepository: TestRepository = new TestRepository()
     ) { }
     
-    deleteTest = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.testRepository.deleteTest(id);
     }
 
-    detailTest = async (id: number) => {
+    detail = async (id: number) => {
         const test: test = await this.testRepository.getTestById(id)
         return (test)
     }
-    updateTest = async (id: number, name: string, description: string, imageurl: string): Promise<test> => {
+    update = async (id: number, name: string, description: string, imageurl: string): Promise<test> => {
         return await this.testRepository.updateTest(id, name, description, imageurl);
     }
 
@@ -23,7 +23,7 @@ export class TestService {
         return (test)
     }
 
-    createTest = async ( name: string, description: string, imageurl: string) => {
+    create = async ( name: string, description: string, imageurl: string) => {
         const test: test = await this.testRepository.createTest(name, description, imageurl)
         return (test)
     }

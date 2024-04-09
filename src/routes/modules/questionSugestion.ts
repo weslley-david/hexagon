@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Question_SugestionController } from "../../controllers/question_Sugestion";
+import { Question_SugestionController } from "../../controllers/questionSugestion";
 import { resolver } from "../../utils/routeAdapters";
 import { body, param, query } from 'express-validator';
 

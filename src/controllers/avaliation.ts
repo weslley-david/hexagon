@@ -21,7 +21,7 @@ export class AvaliationController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const domain = await this.avaliationService.detailAvaliation(parseInt(id));
+        const domain = await this.avaliationService.detail(parseInt(id));
         return res.json(domain).status(200);
     }
 
@@ -38,7 +38,7 @@ export class AvaliationController {
             test 
         } = req.body;
 
-        const result = await this.avaliationService.createAvaliation(
+        const result = await this.avaliationService.create(
             title,
             notes,
             parseInt(client),
@@ -64,7 +64,7 @@ export class AvaliationController {
 
         const id = req.params.id;
 
-        const result = await this.avaliationService.updateAvaliation(
+        const result = await this.avaliationService.update(
             parseInt(id),
             title,
             notes,
@@ -83,7 +83,7 @@ export class AvaliationController {
         }
 
         const { id } = req.params;
-        await this.avaliationService.deleteAvaliation(parseInt(id));
+        await this.avaliationService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

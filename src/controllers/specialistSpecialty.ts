@@ -1,11 +1,11 @@
 import { validationResult } from "express-validator";
-import { Specialist_SpecialtyService } from "../services/specialist_specialty";
+import { SpecialistSpecialtyService } from "../services/specialistSpecialty";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
 
 export class Specialist_SpecialtyController {
     constructor(
-        private specialist_SpecialtyService: Specialist_SpecialtyService = new Specialist_SpecialtyService()
+        private specialist_SpecialtyService: SpecialistSpecialtyService = new SpecialistSpecialtyService()
     ) { }
 
     list = async (req: Request, res: Response) => {
@@ -21,7 +21,7 @@ export class Specialist_SpecialtyController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const specialist_Specialty = await this.specialist_SpecialtyService.detailSpecialist_Specialty(parseInt(id));
+        const specialist_Specialty = await this.specialist_SpecialtyService.detail(parseInt(id));
         return res.json(specialist_Specialty).status(200);
     }
 
@@ -31,7 +31,7 @@ export class Specialist_SpecialtyController {
             throw new RequestError('Wrong form fields', validation_result);
         }
         const { specialist, specialty} = req.body;
-        const result = await this.specialist_SpecialtyService.createSpecialist_Specialty(
+        const result = await this.specialist_SpecialtyService.create(
             specialist,
             specialty
         );
@@ -47,7 +47,7 @@ export class Specialist_SpecialtyController {
         const {specialist, specialty} = req.body;
         const id = req.params.id;
 
-        const result = await this.specialist_SpecialtyService.updateSpecialist_Specialty(
+        const result = await this.specialist_SpecialtyService.update(
             parseInt(id),
             specialist,
             specialty
@@ -62,7 +62,7 @@ export class Specialist_SpecialtyController {
         }
 
         const { id } = req.params;
-        await this.specialist_SpecialtyService.deleteSpecialist_Specialty(parseInt(id));
+        await this.specialist_SpecialtyService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

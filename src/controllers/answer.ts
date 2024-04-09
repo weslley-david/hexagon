@@ -21,7 +21,7 @@ export class AnswerController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const domain = await this.answerService.detailAnswer(parseInt(id));
+        const domain = await this.answerService.detail(parseInt(id));
         return res.json(domain).status(200);
     }
 
@@ -36,7 +36,7 @@ export class AnswerController {
             item
         } = req.body;
 
-        const result = await this.answerService.createAnswer(
+        const result = await this.answerService.create(
             parseInt(avaliation), 
             parseInt(question), 
             parseInt(item)
@@ -58,7 +58,7 @@ export class AnswerController {
 
         const id = req.params.id;
 
-        const result = await this.answerService.updateAnswer(
+        const result = await this.answerService.update(
             parseInt(id),
             parseInt(avaliation),
             parseInt(question),
@@ -75,7 +75,7 @@ export class AnswerController {
         }
 
         const { id } = req.params;
-        await this.answerService.deleteAnswer(parseInt(id));
+        await this.answerService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

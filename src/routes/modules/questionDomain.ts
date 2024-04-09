@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Question_DomainController } from "../../controllers/question_Domain";
+import { Question_DomainController } from "../../controllers/questionDomain";
 import { resolver } from "../../utils/routeAdapters";
 import { body, param, query } from 'express-validator';
 

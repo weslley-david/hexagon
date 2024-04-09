@@ -6,15 +6,15 @@ export class QuestionService {
         private questionRepository: QuestionRepository = new QuestionRepository()
     ) { }
     
-    deleteQuestion = async (id: number): Promise<void> => {
+    delete = async (id: number): Promise<void> => {
         await this.questionRepository.deleteQuestion(id);
     }
 
-    detailQuestion = async (id: number) => {
+    detail = async (id: number) => {
         const domain: question = await this.questionRepository.getQuestionById(id)
         return (domain)
     }
-    updateQuestion = async (
+    update = async (
         id: number,
         number: number,
         content: string,
@@ -27,7 +27,7 @@ export class QuestionService {
         return (domain)
     }
 
-    createQuestion = async ( 
+    create = async ( 
         number: number,
         content: string,
         test: number) => {

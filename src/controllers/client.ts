@@ -21,7 +21,7 @@ export class ClientController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const guardian = await this.clientService.detailClient(parseInt(id));
+        const guardian = await this.clientService.detail(parseInt(id));
         return res.json(guardian).status(200);
     }
 
@@ -33,7 +33,7 @@ export class ClientController {
         const { identifier, name, bio, email, password, imageurl, birthdate, code} = req.body;
 
         const birthDate = new Date(birthdate);
-        const result = await this.clientService.createClient(
+        const result = await this.clientService.create(
             identifier,
             name,
             bio,
@@ -57,7 +57,7 @@ export class ClientController {
 
         const birthDate = new Date(birthdate);
 
-        const result = await this.clientService.updateClient(
+        const result = await this.clientService.update(
             parseInt(id),
             identifier,
             name,
@@ -78,7 +78,7 @@ export class ClientController {
         }
 
         const { id } = req.params;
-        await this.clientService.deleteClient(parseInt(id));
+        await this.clientService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

@@ -21,7 +21,7 @@ export class SpecialistController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const specialist = await this.specialistService.detailSpecialist(parseInt(id));
+        const specialist = await this.specialistService.detail(parseInt(id));
         return res.json(specialist).status(200);
     }
 
@@ -32,7 +32,7 @@ export class SpecialistController {
         }
         const { identifier, name, bio, email, password, imageurl, birthdate, crm } = req.body;
         const birthDate = new Date(birthdate);
-        const result = await this.specialistService.createSpecialist(
+        const result = await this.specialistService.create(
             identifier,
             name,
             bio,
@@ -65,7 +65,7 @@ export class SpecialistController {
 
         const birthDate = new Date(birthdate);
 
-        const result = await this.specialistService.updateSpecialist(
+        const result = await this.specialistService.update(
             parseInt(id),
             identifier,
             name,
@@ -86,7 +86,7 @@ export class SpecialistController {
         }
 
         const { id } = req.params;
-        await this.specialistService.deleteSpecialist(parseInt(id));
+        await this.specialistService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

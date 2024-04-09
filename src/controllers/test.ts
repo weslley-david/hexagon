@@ -21,7 +21,7 @@ export class TestController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const domain = await this.testService.detailTest(parseInt(id));
+        const domain = await this.testService.detail(parseInt(id));
         return res.json(domain).status(200);
     }
 
@@ -32,7 +32,7 @@ export class TestController {
         }
         const { name, description, imageurl} = req.body;
         
-        const result = await this.testService.createTest(
+        const result = await this.testService.create(
             name,
             description,
             imageurl
@@ -50,7 +50,7 @@ export class TestController {
         const id = req.params.id;
         console.log("aaaaaaaaaaaaaaa")
         console.log(name, description, imageurl)
-        const result = await this.testService.updateTest(
+        const result = await this.testService.update(
             parseInt(id),
             name,
             description,
@@ -66,7 +66,7 @@ export class TestController {
         }
 
         const { id } = req.params;
-        await this.testService.deleteTest(parseInt(id));
+        await this.testService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

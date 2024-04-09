@@ -1,11 +1,11 @@
 import { validationResult } from "express-validator";
-import { Question_DomainService  } from "../services/question_domain";
+import { ClientGuardianService  } from "../services/clientGuardian";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
 
-export class Question_DomainController {
+export class Client_GuardianController {
     constructor(
-        private question_DomainService: Question_DomainService = new Question_DomainService()
+        private client_GuardianService: ClientGuardianService = new ClientGuardianService()
     ) { }
 
     list = async (req: Request, res: Response) => {
@@ -15,14 +15,14 @@ export class Question_DomainController {
         }
 
         const { skip, take } = req.query;
-        const result = await this.question_DomainService.list(parseInt(skip as string), parseInt(take as string));
+        const result = await this.client_GuardianService.list(parseInt(skip as string), parseInt(take as string));
         return res.json(result).status(200);
     };
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const question_Domain = await this.question_DomainService.detailQuestion_Domain(parseInt(id));
-        return res.json(question_Domain).status(200);
+        const guardian = await this.client_GuardianService.detailClient_Guardian(parseInt(id));
+        return res.json(guardian).status(200);
     }
 
     create = async (req: Request, res: Response) => {
@@ -30,11 +30,11 @@ export class Question_DomainController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const { question, domain} = req.body;
+        const { guardian, client} = req.body;
 
-        const result = await this.question_DomainService.createQuestion_Domain(
-            parseInt(question),
-            parseInt(domain)
+        const result = await this.client_GuardianService.createClient_Guardian(
+            parseInt(client),
+            parseInt(guardian)
         );
 
         return res.json(result).status(201);
@@ -45,13 +45,13 @@ export class Question_DomainController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const {question, domain} = req.body;
+        const {client, guardian} = req.body;
         const id = req.params.id;
 
-        const result = await this.question_DomainService.updateQuestion_Domain(
+        const result = await this.client_GuardianService.updateClient_Guardian(
             parseInt(id),
-            parseInt(question),
-            parseInt(domain)
+            parseInt(client),
+            parseInt(guardian)
         );
 
         return res.json(result).status(201);
@@ -63,7 +63,7 @@ export class Question_DomainController {
         }
 
         const { id } = req.params;
-        await this.question_DomainService.deleteQuestion_Domain(parseInt(id));
+        await this.client_GuardianService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

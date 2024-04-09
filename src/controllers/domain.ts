@@ -21,7 +21,7 @@ export class DomainController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const domain = await this.domainService.detailDomain(parseInt(id));
+        const domain = await this.domainService.detail(parseInt(id));
         return res.json(domain).status(200);
     }
 
@@ -32,7 +32,7 @@ export class DomainController {
         }
         const { name, description} = req.body;
         
-        const result = await this.domainService.createDomain(
+        const result = await this.domainService.create(
             name,
             description
         );
@@ -49,7 +49,7 @@ export class DomainController {
        
         const id = req.params.id;
 
-        const result = await this.domainService.updateDomain(
+        const result = await this.domainService.update(
             parseInt(id),
             name,
             description
@@ -64,7 +64,7 @@ export class DomainController {
         }
 
         const { id } = req.params;
-        await this.domainService.deleteDomain(parseInt(id));
+        await this.domainService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

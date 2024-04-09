@@ -21,7 +21,7 @@ export class QuestionController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const question = await this.questionService.detailQuestion(parseInt(id));
+        const question = await this.questionService.detail(parseInt(id));
         return res.json(question).status(200);
     }
 
@@ -35,7 +35,7 @@ export class QuestionController {
             content,
             test
         } = req.body;
-        const result = await this.questionService.createQuestion(
+        const result = await this.questionService.create(
             number,
             content,
             test
@@ -52,7 +52,7 @@ export class QuestionController {
         const { number, content, test } = req.body;
         const id = req.params.id;
 
-        const result = await this.questionService.updateQuestion(
+        const result = await this.questionService.update(
             parseInt(id),
             number,
             content,
@@ -68,7 +68,7 @@ export class QuestionController {
         }
 
         const { id } = req.params;
-        await this.questionService.deleteQuestion(parseInt(id));
+        await this.questionService.delete(parseInt(id));
         return res.status(204).send();
     }
 }

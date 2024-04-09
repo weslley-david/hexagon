@@ -21,7 +21,7 @@ export class GuardianController {
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const guardian = await this.guardianService.detailGuardian(parseInt(id));
+        const guardian = await this.guardianService.detail(parseInt(id));
         return res.json(guardian).status(200);
     }
 
@@ -33,7 +33,7 @@ export class GuardianController {
         const { identifier, name, bio, email, password, imageurl, birthdate } = req.body;
 
         const birthDate = new Date(birthdate);
-        const result = await this.guardianService.createGuardian(
+        const result = await this.guardianService.create(
             identifier,
             name,
             bio,
@@ -56,7 +56,7 @@ export class GuardianController {
 
         const birthDate = new Date(birthdate);
 
-        const result = await this.guardianService.updateGuardian(
+        const result = await this.guardianService.update(
             parseInt(id),
             identifier,
             name,
@@ -76,7 +76,7 @@ export class GuardianController {
         }
 
         const { id } = req.params;
-        await this.guardianService.deleteGuardian(parseInt(id));
+        await this.guardianService.delete(parseInt(id));
         return res.status(204).send();
     }
 }
