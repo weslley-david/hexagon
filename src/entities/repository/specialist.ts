@@ -26,6 +26,14 @@ export class SpecialistRepository {
         return specialist
     }
 
+    getSpecialistByEmail = async (email: string): Promise<specialist> => {
+        const specialist = await prisma.specialist.findUnique({ where: { email: email } })
+        if (!specialist) {
+            throw new DatabaseError("Coud'not recover data of email");
+        }
+        return specialist
+    }
+
     createSpecialist = async (
         identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date, crm: string
     ): Promise<specialist> => {        

@@ -11,8 +11,7 @@ export class QuestionService {
     }
 
     detail = async (id: number) => {
-        const domain: question = await this.questionRepository.getQuestionById(id)
-        return (domain)
+        return await this.questionRepository.getQuestionByNumber(id)
     }
     update = async (
         id: number,

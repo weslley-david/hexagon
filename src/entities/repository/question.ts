@@ -5,6 +5,7 @@ import { DatabaseError } from "../../errors";
 export class QuestionRepository {
 
     listQuestion = async (skip: number, take: number): Promise<question[]> => {
+
         const question = await prisma.question.findMany({
             skip: skip,
             take: take,
@@ -18,7 +19,26 @@ export class QuestionRepository {
         return question
     }
 
+    getQuestionByNumber = async (number: number) => {
+        const questionWithItems = await prisma.question.findFirst({
+            where: { number: number },
+            include: {
+                item_item_questionToquestion: true
+            }
+        });
+        return questionWithItems
+    }
+
     getQuestionById = async (id: number): Promise<question> => {
+        const questionWithItems = await prisma.question.findUnique({
+            where: { id: id },
+            include: {
+                item_item_questionToquestion: true
+            }
+        });
+
+        console.log(questionWithItems);
+
         const question = await prisma.question.findUnique({ where: { id: id } })
         if (!question) {
             throw new DatabaseError("Coud'not recover data of email");
@@ -44,7 +64,7 @@ export class QuestionRepository {
     }
 
 
-    updateQuestion = async (id: number, 
+    updateQuestion = async (id: number,
         number: number,
         content: string,
         test: number): Promise<question> => {

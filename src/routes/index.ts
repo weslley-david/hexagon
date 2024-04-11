@@ -16,6 +16,7 @@ import itemRoutes from "./modules/item";
 import question_Sugestion from "./modules/questionSugestion";
 import avaliationRoutes from "./modules/avaliation";
 import answerRoutes from "./modules/answer";
+import authRoutes from "./modules/auth";
 
 const router = Router()
 
@@ -36,4 +37,5 @@ router.use('/item', itemRoutes)
 router.use('/questionsugestion', question_Sugestion)
 router.use('/avaliation', avaliationRoutes)
 router.use('/answer', answerRoutes)
+router.use('/auth', authRoutes)
 export default router
