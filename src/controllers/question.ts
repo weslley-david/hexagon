@@ -20,9 +20,9 @@ export class QuestionController {
     };
 
     detail = async (req: Request, res: Response) => {
-        const { id } = req.params;
-        const question = await this.questionService.detail(parseInt(id));
-        return res.json(question).status(200);
+        const { number, question } = req.query;
+        const result = await this.questionService.detail(parseInt(number+""), parseInt(question+""));
+        return res.json(result).status(200);
     }
 
     create = async (req: Request, res: Response) => {

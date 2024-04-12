@@ -10,8 +10,8 @@ export class QuestionService {
         await this.questionRepository.deleteQuestion(id);
     }
 
-    detail = async (id: number) => {
-        return await this.questionRepository.getQuestionByNumber(id)
+    detail = async (id: number, test: number) => {
+        return await this.questionRepository.getQuestionByNumber(id, test)
     }
     update = async (
         id: number,

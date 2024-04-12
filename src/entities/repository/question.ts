@@ -19,9 +19,9 @@ export class QuestionRepository {
         return question
     }
 
-    getQuestionByNumber = async (number: number) => {
+    getQuestionByNumber = async (number: number, test: number) => {
         const questionWithItems = await prisma.question.findFirst({
-            where: { number: number },
+            where: { number: number, test: test },
             include: {
                 item_item_questionToquestion: true
             }

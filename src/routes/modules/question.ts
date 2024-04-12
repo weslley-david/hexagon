@@ -11,7 +11,7 @@ questionRoutes.get('/list',
     query('take').isInt(),
     resolver(questionController.list))
 
-questionRoutes.get('/:id',resolver(questionController.detail))
+questionRoutes.get('/find',resolver(questionController.detail))
 questionRoutes.post('/',resolver(questionController.create))
 questionRoutes.put('/:id',resolver(questionController.update))
 questionRoutes.delete('/:id',resolver(questionController.delete))
