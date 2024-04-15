@@ -17,6 +17,8 @@ app.get('/', (req: Request, res: Response) => {
 })
 console.log(__dirname)
 
+app.use('/static', express.static('assets'))
+
 app.use(routes)
 
 app.listen(port, () => {

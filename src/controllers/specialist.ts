@@ -8,6 +8,16 @@ export class SpecialistController {
         private specialistService: SpecialistService = new SpecialistService()
     ) { }
 
+    clients = async (req: Request, res: Response) => {
+        const validator_result = validationResult(req);
+        if (!validator_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validationResult.arguments);
+        }
+
+        const { id } = req.params;
+        const result = await this.specialistService.getclients(parseInt(id));
+        return res.json(result).status(200);
+    }
     list = async (req: Request, res: Response) => {
         const validator_result = validationResult(req);
         if (!validator_result.isEmpty()) {

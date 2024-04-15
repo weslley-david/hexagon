@@ -8,6 +8,17 @@ export class QuestionController {
         private questionService: QuestionService = new QuestionService()
     ) { }
 
+    getAll = async (req: Request, res: Response) => {
+        const validator_result = validationResult(req);
+        if (!validator_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validationResult.arguments);
+        }
+
+        const { test } = req.params;
+        const result = await this.questionService.getAll(parseInt(test))
+        return res.json(result).status(200);
+    };
+
     list = async (req: Request, res: Response) => {
         const validator_result = validationResult(req);
         if (!validator_result.isEmpty()) {
@@ -20,8 +31,8 @@ export class QuestionController {
     };
 
     detail = async (req: Request, res: Response) => {
-        const { number, question } = req.query;
-        const result = await this.questionService.detail(parseInt(number+""), parseInt(question+""));
+        const { number, test } = req.query;
+        const result = await this.questionService.detail(parseInt(number+""), parseInt(test+""));
         return res.json(result).status(200);
     }
 

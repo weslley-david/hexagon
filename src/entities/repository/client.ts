@@ -4,6 +4,23 @@ import { DatabaseError } from "../../errors";
 
 export class ClientRepository {
 
+    getClientByProfessionalId = async (id: number) => {
+        const clients = await prisma.client_specialist.findMany({
+            where: {
+              specialist: id,
+            },
+            include: {
+              client_client_specialist_clientToclient: true,
+            },
+          });
+      
+          // Extract client data from the result
+          const clientData = clients.map((client) => client.client_client_specialist_clientToclient);
+      
+          return clientData;
+        
+    }
+
     listClient = async (skip: number, take: number): Promise<client[]> => {
         const client = await prisma.client.findMany({
             skip: skip,

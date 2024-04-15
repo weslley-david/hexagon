@@ -9,6 +9,10 @@ export class QuestionService {
     delete = async (id: number): Promise<void> => {
         await this.questionRepository.deleteQuestion(id);
     }
+    
+    getAll = async (testid: number) => {
+        return await this.questionRepository.getAllQuestionsByTest(testid)
+    }
 
     detail = async (id: number, test: number) => {
         return await this.questionRepository.getQuestionByNumber(id, test)

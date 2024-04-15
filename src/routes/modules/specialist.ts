@@ -12,6 +12,7 @@ specialistRoutes.get('/list',
     resolver(specialistController.list))
 
 specialistRoutes.get('/:id',resolver(specialistController.detail))
+specialistRoutes.get('/clients/:id',resolver(specialistController.clients))
 specialistRoutes.post('/',resolver(specialistController.create))
 specialistRoutes.put('/:id',resolver(specialistController.update))
 specialistRoutes.delete('/:id',resolver(specialistController.delete))

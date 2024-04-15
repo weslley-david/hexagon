@@ -3,6 +3,29 @@ import { prisma } from "../database";
 import { DatabaseError } from "../../errors";
 
 export class QuestionRepository {
+    getAllQuestionsByTest = async (test: number) => {
+        const questionWithItems = await prisma.question.findMany({
+            orderBy: [
+                {
+                  number: 'desc',
+                },
+              ],
+            where: { test: test },
+            
+            include: {
+                item_item_questionToquestion: {
+                    orderBy: [
+                        {
+                          number: 'asc',
+                        },
+                      ],
+                }
+            }
+            
+        });
+        return questionWithItems
+    }
+
 
     listQuestion = async (skip: number, take: number): Promise<question[]> => {
 
@@ -23,7 +46,13 @@ export class QuestionRepository {
         const questionWithItems = await prisma.question.findFirst({
             where: { number: number, test: test },
             include: {
-                item_item_questionToquestion: true
+                item_item_questionToquestion: {
+                    orderBy: [
+                        {
+                          number: 'asc',
+                        },
+                      ],
+                }
             }
         });
         return questionWithItems
