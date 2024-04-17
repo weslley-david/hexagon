@@ -14,9 +14,8 @@ export class ClientController {
             throw new RequestError('Wrong form fields', validationResult.arguments);
         }
 
-        const { skip, take } = req.query;
-        const {specialist} = req.body
-        const result = await this.clientService.list(parseInt(skip as string), parseInt(take as string), parseInt(specialist));
+        const { skip, take, specialist} = req.query;
+        const result = await this.clientService.list(parseInt(skip as string), parseInt(take as string), parseInt(specialist as string));
         return res.json(result).status(200);
     };
 
