@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator";
+import { body, validationResult } from "express-validator";
 import { ClientService } from "../services/client";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
@@ -15,7 +15,8 @@ export class ClientController {
         }
 
         const { skip, take } = req.query;
-        const result = await this.clientService.list(parseInt(skip as string), parseInt(take as string));
+        const {specialist} = req.body
+        const result = await this.clientService.list(parseInt(skip as string), parseInt(take as string), parseInt(specialist));
         return res.json(result).status(200);
     };
 

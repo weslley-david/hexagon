@@ -18,8 +18,8 @@ export class ClientService {
         return await this.clientRepository.updateClient(id, identifier, name, bio, email, password, imageurl, birthdate, code);
     }
 
-    list = async (skip: number, take: number) => {
-        const client: client[] = await this.clientRepository.listClient(skip, take)
+    list = async (skip: number, take: number, specialist: number) => {
+        const client: client[] = await this.clientRepository.getClientBySpecialistId( skip, take, specialist)
         return (client)
     }
 

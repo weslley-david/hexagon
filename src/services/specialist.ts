@@ -26,7 +26,7 @@ export class SpecialistService {
     }
 
     getclients = async (id: number) => {
-        return await this.clientRepository.getClientByProfessionalId(id)
+        return await this.clientRepository.getClientBySpecialistId(id)
         
     }
 

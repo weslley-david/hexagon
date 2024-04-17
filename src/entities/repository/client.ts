@@ -4,10 +4,12 @@ import { DatabaseError } from "../../errors";
 
 export class ClientRepository {
 
-    getClientByProfessionalId = async (id: number) => {
+    getClientBySpecialistId = async ( skip: number, take: number, specialist: number) => {
         const clients = await prisma.client_specialist.findMany({
+            skip: skip,
+            take: take,
             where: {
-              specialist: id,
+              specialist: specialist,
             },
             include: {
               client_client_specialist_clientToclient: true,
