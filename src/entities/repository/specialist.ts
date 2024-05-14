@@ -36,7 +36,8 @@ export class SpecialistRepository {
 
     createSpecialist = async (
         identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date, crm: string
-    ): Promise<specialist> => {        
+    ): Promise<specialist> => {  
+        
         const specialist_result = await prisma.specialist.create({
             data: {
                 identifier: identifier,
@@ -49,7 +50,7 @@ export class SpecialistRepository {
                 birthdate: birthdate
             }
         })
-
+        
         return specialist_result
     }
 

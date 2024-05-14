@@ -1,17 +1,27 @@
-import { validationResult } from "express-validator";
+import { Result, validationResult } from "express-validator";
 import { SpecialistService } from "../services/specialist";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
-
+import { encryptPassword } from "../utils/encryptor";
 export class SpecialistController {
     constructor(
         private specialistService: SpecialistService = new SpecialistService()
     ) { }
+    signin = async (req: Request, res: Response) => {
+        const validator_result = validationResult(req);
+        if (!validator_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validator_result);
+        }
+
+        const { email, password } = req.body;
+        const result = await this.specialistService.signin(password+"", email+"");
+        return res.json(result).status(200);
+    };
 
     clients = async (req: Request, res: Response) => {
         const validator_result = validationResult(req);
         if (!validator_result.isEmpty()) {
-            throw new RequestError('Wrong form fields', validationResult.arguments);
+            throw new RequestError('Wrong form fields', validator_result);
         }
 
         const { id } = req.params;
@@ -21,7 +31,7 @@ export class SpecialistController {
     list = async (req: Request, res: Response) => {
         const validator_result = validationResult(req);
         if (!validator_result.isEmpty()) {
-            throw new RequestError('Wrong form fields', validationResult.arguments);
+            throw new RequestError('Wrong form fields', validator_result);
         }
 
         const { skip, take } = req.query;
@@ -47,7 +57,7 @@ export class SpecialistController {
             name,
             bio,
             email,
-            password,
+            encryptPassword(password),
             imageurl,
             birthDate,
             crm

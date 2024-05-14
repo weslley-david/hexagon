@@ -2,11 +2,22 @@ import { validationResult } from "express-validator";
 import { GuardianService } from "../services/guardian";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
+import { encryptPassword } from "../utils/encryptor";
 
 export class GuardianController {
     constructor(
         private guardianService: GuardianService = new GuardianService()
     ) { }
+    signin = async (req: Request, res: Response) => {
+        const validator_result = validationResult(req);
+        if (!validator_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validator_result);
+        }
+
+        const { email, password } = req.body;
+        const result = await this.guardianService.signin(password+"", email+"");
+        return res.json(result).status(200);
+    };
 
     list = async (req: Request, res: Response) => {
         const validator_result = validationResult(req);
@@ -38,7 +49,7 @@ export class GuardianController {
             name,
             bio,
             email,
-            password,
+            encryptPassword(password),
             imageurl,
             birthDate
         );

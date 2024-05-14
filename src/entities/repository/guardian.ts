@@ -3,6 +3,13 @@ import { prisma } from "../database";
 import { DatabaseError } from "../../errors";
 
 export class GuardianRepository {
+    getGuardianByEmail = async (email: string): Promise<guardian> => {
+        const guardian = await prisma.guardian.findUnique({ where: { email: email } })
+        if (!guardian) {
+            throw new DatabaseError("Coud'not recover data of email");
+        }
+        return guardian
+    }
 
     listGuardian = async (skip: number, take: number): Promise<guardian[]> => {
         const guardian = await prisma.guardian.findMany({

@@ -1,10 +1,21 @@
 import { guardian } from "@prisma/client"
 import { GuardianRepository } from "../entities/repository/guardian"
+import { encryptPassword } from "../utils/encryptor"
+import { generateTokens } from "../utils/generateTokens"
 
 export class GuardianService {
     constructor(
         private guardianRepository: GuardianRepository = new GuardianRepository()
     ) { }
+    signin = async (password: string, email: string) => {
+        const specialist: guardian = await this.guardianRepository.getGuardianByEmail(email)
+
+        if(specialist.password == encryptPassword(password)){
+            let [acetoken, reftoken] =  generateTokens(specialist.id, specialist.identifier, "guardian")
+            return ({ "signin": true, "reftoken": reftoken, "acetoken": acetoken, "id": specialist.id, "type": "guardian"})
+        }
+        return ({"signing": false})
+    }
     
     delete = async (id: number): Promise<void> => {
         await this.guardianRepository.deleteGuardian(id);

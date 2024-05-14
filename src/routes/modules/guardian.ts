@@ -11,9 +11,14 @@ guardianRoutes.get('/list',
     query('take').isInt(),
     resolver(guardianController.list))
 
-guardianRoutes.get('/:id',resolver(guardianController.detail))
-guardianRoutes.post('/',resolver(guardianController.create))
-guardianRoutes.put('/:id',resolver(guardianController.update))
-guardianRoutes.delete('/:id',resolver(guardianController.delete))
+guardianRoutes.post('/signin',
+    body('email').isEmail(),
+    body('password').isString(),
+    resolver(guardianController.signin))
+
+guardianRoutes.get('/:id', resolver(guardianController.detail))
+guardianRoutes.post('/', resolver(guardianController.create))
+guardianRoutes.put('/:id', resolver(guardianController.update))
+guardianRoutes.delete('/:id', resolver(guardianController.delete))
 
 export default guardianRoutes

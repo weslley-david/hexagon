@@ -1,10 +1,24 @@
 import { client } from "@prisma/client"
 import { ClientRepository } from "../entities/repository/client"
+import { randomCode } from "../utils/randomcode/radomcode";
+import { Result } from "express-validator";
 
 export class ClientService {
     constructor(
         private clientRepository: ClientRepository = new ClientRepository()
     ) { }
+
+    
+    getBySpecialist = async (id: number, skip: number, take: number) => {
+        const result = await this.clientRepository.getClientBySpecialistId(skip, take,id)   
+        return result
+    }
+
+    getByGuardian = async (id: number, skip: number, take: number) => {
+        const result = await this.clientRepository.getClientByGuardianId(skip, take,id)   
+        return result
+
+    }
     
     delete = async (id: number): Promise<void> => {
         await this.clientRepository.deleteClient(id);
@@ -23,8 +37,9 @@ export class ClientService {
         return (client)
     }
 
-    create = async (  identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date, code: string) => {
-        const client: client = await this.clientRepository.createClient(identifier, name, bio, email, password, imageurl, birthdate, code)
+    create = async (  identifier: string, name: string, bio: string, imageurl: string, birthdate: Date) => {
+        
+        const client: client = await this.clientRepository.createClient(identifier, name, bio, imageurl, birthdate, randomCode(7))
         return (client)
     }
 
