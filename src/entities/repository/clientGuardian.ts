@@ -55,10 +55,12 @@ export class Client_GuardianRepository {
         return updatedClient_Guardian
     }
 
-    deleteClient_Guardian = async (id: number) => {
+    deleteClient_Guardian = async (client: number, guardian: number) => {
         const deletedClient_Guardian = await prisma.client_guardian.deleteMany({
             where: {
-                id: id
+                client: client,
+                guardian:guardian
+
             },
         });
         return deletedClient_Guardian

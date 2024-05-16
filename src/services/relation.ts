@@ -12,29 +12,13 @@ export class RelationService {
         
     ) { }
     
-    // delete = async (id: number): Promise<void> => {
-    //     await this.clientSpecialistRepository.deleteQuestion(id);
-    // }
+    deleteClientGuardian = async (client: number, guardian: number) => {
+        return await this.clientGuardianRepository.deleteClient_Guardian(client, guardian)
+    }
     
-    // getAll = async (testid: number) => {
-    //     return await this.clientSpecialistRepository.getAllQuestionsByTest(testid)
-    // }
-
-    // detail = async (id: number, test: number) => {
-    //     return await this.clientSpecialistRepository.getQuestionByNumber(id, test)
-    // }
-    // update = async (
-    //     id: number,
-    //     number: number,
-    //     content: string,
-    //     test: number): Promise<question> => {
-    //     return await this.clientSpecialistRepository.updateQuestion(id, number,content, test);
-    // }
-
-    // list = async (skip: number, take: number) => {
-    //     const domain: question[] = await this.clientSpecialistRepository.listQuestion(skip, take)
-    //     return (domain)
-    // }
+    deleteClientSpecialist = async (client: number, specialist: number) => {
+        return await this.clientSpecialistRepository.deleteClient_Specialist(client, specialist)
+    }
 
     createSpecialistRelation = async ( 
         code: string,

@@ -90,6 +90,19 @@ export class GuardianController {
         await this.guardianService.delete(parseInt(id));
         return res.status(204).send();
     }
+
+    getGuardiansByClientId = async (req: Request, res: Response) => {
+        const validation_result = validationResult(req);
+        if (!validation_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validation_result);
+        }
+        const { client, skip, take} = req.query;
+
+        const result = await this.guardianService.getGuardianByClientId(parseInt(client as string), parseInt(skip as string), parseInt(take as string))
+
+        return res.json(result).status(200).send();
+
+    }
 }
 
 

@@ -42,11 +42,17 @@ export class SpecialistService {
         
     }
 
+    getSpecialistsByClientId = async (clientId: number, skip: number, take: number) => {
+        const specialists = await this.specialistRepository.getSpecialistByClientId(skip, take, clientId)
+
+        
+        return specialists
+        
+    }
+
     create = async (  identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date, crm: string) => {
         
         const specialist: specialist = await this.specialistRepository.createSpecialist(identifier, name, bio, email, password, imageurl, birthdate, crm)
         return (specialist)
     }
-
-
 }

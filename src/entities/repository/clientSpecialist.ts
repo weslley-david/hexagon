@@ -55,10 +55,12 @@ export class Client_SpecialistRepository {
         return updatedClient_Specialist
     }
 
-    deleteClient_Specialist = async (id: number) => {
+    deleteClient_Specialist = async (client: number, specialist: number) => {
         const deletedClient_Specialist = await prisma.client_specialist.deleteMany({
             where: {
-                id: id
+                client: client,
+                specialist:specialist
+
             },
         });
         return deletedClient_Specialist

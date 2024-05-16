@@ -1,8 +1,6 @@
 import { validationResult } from "express-validator";
-import { CouncilService } from "../services/council";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
-import { ClientGuardianService } from "../services/clientGuardian";
 import { RelationService } from "../services/relation";
 
 export class RelationController {
@@ -34,14 +32,27 @@ export class RelationController {
         return res.json(result).status(201);
     }
 
-    delete = async (req: Request, res: Response) => {
+    deleteSpecialistRelation = async (req: Request, res: Response) => {
         const validation_result = validationResult(req);
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
 
-        //const { id } = req.params;
-        //await this.councilService.delete(parseInt(id));
-        return res.status(204).send();
+        const { client } = req.params;
+        const specialist = res.locals.id
+        const result = await this.relationService.deleteClientSpecialist(parseInt(client), parseInt(specialist))
+        return res.json(result).status(204).send();
+    }
+
+    deleteGuardianRelation = async (req: Request, res: Response) => {
+        const validation_result = validationResult(req);
+        if (!validation_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validation_result);
+        }
+
+        const { client } = req.params;
+        const guardian = res.locals.id
+        const result = await this.relationService.deleteClientGuardian(parseInt(client), parseInt(guardian))
+        return res.json(result).status(204).send();
     }
 }

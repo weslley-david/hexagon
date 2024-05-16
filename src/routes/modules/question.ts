@@ -1,22 +1,19 @@
 import { Router } from "express";
-import { QuestionController } from "../../controllers/question";
+import { TestController } from "../../controllers/test";
 import { resolver } from "../../utils/routeAdapters";
 import { body, param, query } from 'express-validator';
 
-const questionRoutes = Router()
+const testRoutes = Router()
 
-const questionController = new QuestionController()
+const testController = new TestController()
+testRoutes.get('/list',
+    query('skip').isInt(),
+    query('take').isInt(),
+    resolver(testController.list))
 
+testRoutes.get('/:id',resolver(testController.detail))
+testRoutes.post('/',resolver(testController.create))
+testRoutes.put('/:id',resolver(testController.update))
+testRoutes.delete('/:id',resolver(testController.delete))
 
-questionRoutes.get('/find',resolver(questionController.detail))
-questionRoutes.get('/getall/:test',resolver(questionController.getAll))
-
-// questionRoutes.get('/list',
-//     query('skip').isInt(),
-//     query('take').isInt(),
-//     resolver(questionController.list))
-// questionRoutes.post('/',resolver(questionController.create))
-// questionRoutes.put('/:id',resolver(questionController.update))
-// questionRoutes.delete('/:id',resolver(questionController.delete))
-
-export default questionRoutes
+export default testRoutes

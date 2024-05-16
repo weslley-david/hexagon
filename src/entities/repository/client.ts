@@ -26,7 +26,6 @@ export class ClientRepository {
     }
 
     getClientByGuardianId = async ( skip: number, take: number, specialist: number) => {
-        console.log(specialist)
         const clients = await prisma.client_guardian.findMany({
             skip: skip,
             take: take,

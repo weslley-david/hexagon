@@ -80,4 +80,24 @@ export class GuardianRepository {
         });
         return deletedGuardian
     }
+
+    getGuardianByClientId = async (skip: number, take: number, clientId: number) => {
+        const clients = await prisma.client_guardian.findMany({
+            skip: skip,
+            take: take,
+            where: {
+              client: clientId,
+            },
+            include: {
+                guardian_client_guardian_guardianToguardian: true,
+                //specialist_client_specialist_specialistTospecialist: true,
+                //client_client_specialist_clientToclient: true,
+            },
+          });
+          // Extract client data from the result
+          const guardians = clients.map((guardians) => guardians.guardian_client_guardian_guardianToguardian);
+          return guardians;
+
+        
+    }
 }

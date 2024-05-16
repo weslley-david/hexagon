@@ -34,6 +34,13 @@ export class GuardianService {
         return (guardian)
     }
 
+    getGuardianByClientId = async (clientId: number, skip: number, take: number) => {
+        const guardian = await this.guardianRepository.getGuardianByClientId(skip, take, clientId)
+
+        
+        return guardian
+        
+    }
     create = async (  identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date) => {
         const guardian: guardian = await this.guardianRepository.createGuardian(identifier, name, bio, email, password, imageurl, birthdate )
         return (guardian)

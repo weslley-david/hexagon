@@ -85,4 +85,23 @@ export class SpecialistRepository {
         });
         return deletedSpecialist
     }
+
+    getSpecialistByClientId = async (skip: number, take: number, clientId: number) => {
+        const clients = await prisma.client_specialist.findMany({
+            skip: skip,
+            take: take,
+            where: {
+              client: clientId,
+            },
+            include: {
+                specialist_client_specialist_specialistTospecialist: true,
+                //client_client_specialist_clientToclient: true,
+            },
+          });
+          // Extract client data from the result
+          const specialists = clients.map((specialists) => specialists.specialist_client_specialist_specialistTospecialist);
+          return specialists;
+
+        
+    }
 }

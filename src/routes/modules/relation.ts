@@ -1,34 +1,17 @@
-//manage relations between users
 
-import { Router } from "express";
-import { RelationController } from "../../controllers/relation";
-import { resolver } from "../../utils/routeAdapters";
+import { Router } from 'express';
 import { body, param, query } from 'express-validator';
-import { SpecialistMiddleware } from "../../utils/middlewares/Specialist";
-import { GuardianMiddleware } from "../../utils/middlewares/Guardian";
+import { RelationController } from '../../controllers/relation';
+import { resolver } from '../../utils/routeAdapters';
+import { SpecialistMiddleware } from '../../utils/middlewares/Specialist';
+import { GuardianMiddleware } from '../../utils/middlewares/Guardian';
 
 const relationRoutes = Router()
+const relationController = new RelationController();
 
-const relationController = new RelationController()
-
-relationRoutes.post('/specialist',
-    SpecialistMiddleware,
-    body("code").isString(),
-    body("identifier").isString(),
-    resolver(relationController.createspecialist))
-
-relationRoutes.post('/guardian',
-    GuardianMiddleware,
-    body("code").isString(),
-    body("identifier").isString(),
-    resolver(relationController.createguardian))
-
-// relationRoutes.post('/guardian',
-//     SpecialistMiddleware,
-//     body("code").isString(),
-//     body("identifier").isString(),
-//     resolver(relationController.createspecialist))
-
-relationRoutes.delete('/:id', resolver(relationController.delete))
+relationRoutes.post('/specialist', body("code").isString(), body("identifier").isString(),SpecialistMiddleware,resolver(relationController.createspecialist))
+relationRoutes.post('/guardian',body("code").isString(), body("identifier").isString(), GuardianMiddleware ,resolver(relationController.createguardian))
+relationRoutes.delete('/specialist', resolver(relationController.deleteSpecialistRelation))
+relationRoutes.delete('/guaridan', resolver(relationController.deleteGuardianRelation))
 
 export default relationRoutes

@@ -5,23 +5,16 @@ import { errorHandler } from './utils/errorHandler/errorHandler'
 
 const app = express()
 const port = 3000
-
 app.use(cors())
 app.use(express.json())
-
 app.get('/', (req, res) => {
-    res.json({ "working": "good" })
+    res.json({ "msg": "Wellcome to HEXAGON" })
 })
-
-console.log(__dirname)
-
 app.use('/static', express.static('assets'))
-
 app.use(routes)
-
-// Error handling middleware
 app.use(errorHandler)
-
 app.listen(port, () => {
-    console.log(`༼ つ ╹ ╹ ༽つ http://localhost:${port}`)
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    console.log(`keep your calm, do your best on: http://localhost:${port}`)
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 })

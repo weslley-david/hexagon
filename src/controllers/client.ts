@@ -103,7 +103,6 @@ export class ClientController {
         }
         const id = res.locals.id
         const { skip, take} = req.query;
-        console.log(skip, take)
         const result = await this.clientService.getByGuardian(id, parseInt(skip as string), parseInt(take as string))
         return res.json(result).status(200)
     }
