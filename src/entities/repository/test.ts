@@ -30,6 +30,12 @@ export class TestRepository {
         
     }
 
+    getAtecResultByAvaliationId = async (avaliationId: number) => {
+        const query = "select question.area, sum(item.score) from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = 7 group by question.area;"
+        return query
+        
+    }
+
     listTest = async (skip: number, take: number): Promise<test[]> => {
         const test = await prisma.test.findMany({
             skip: skip,
