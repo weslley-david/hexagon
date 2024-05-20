@@ -7,7 +7,7 @@ export class TestRepository {
     getAtec = async () => {
         const test = await prisma.test.findFirst({
             where: {
-                name: 'atec'
+                name: 'ATEC'
             }
         })
         if (!test) {
