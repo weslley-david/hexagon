@@ -4,6 +4,32 @@ import { DatabaseError } from "../../errors";
 
 export class TestRepository {
 
+    getAtec = async () => {
+        const test = await prisma.test.findFirst({
+            where: {
+                name: 'atec'
+            }
+        })
+        if (!test) {
+            throw new DatabaseError("Coud'not recover atec questions");
+        }
+        const questions = await prisma.question.findMany({
+            where: {
+                test: test?.id,
+            },
+            include: {
+              item_item_questionToquestion: {}
+            },
+          });
+          console.log(questions)
+
+          if (!questions) {
+            throw new DatabaseError("No questions associated");
+        }
+          return questions;
+        
+    }
+
     listTest = async (skip: number, take: number): Promise<test[]> => {
         const test = await prisma.test.findMany({
             skip: skip,

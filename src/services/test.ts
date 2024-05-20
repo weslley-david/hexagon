@@ -5,6 +5,10 @@ export class TestService {
     constructor(
         private testRepository: TestRepository = new TestRepository()
     ) { }
+
+    getatec = async () => {
+        return await this.testRepository.getAtec();   
+    }
     
     delete = async (id: number): Promise<void> => {
         await this.testRepository.deleteTest(id);
