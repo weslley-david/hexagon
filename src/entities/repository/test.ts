@@ -18,22 +18,37 @@ export class TestRepository {
                 test: test?.id,
             },
             include: {
-              item_item_questionToquestion: {}
+                item_item_questionToquestion: {}
             },
-          });
-          console.log(questions)
+        });
+        console.log(questions)
 
-          if (!questions) {
+        if (!questions) {
             throw new DatabaseError("No questions associated");
         }
-          return questions;
-        
+        return questions;
+
     }
 
     getAtecResultByAvaliationId = async (avaliationId: number) => {
         const query = "select question.area, sum(item.score) from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = 7 group by question.area;"
         return query
+
+    }
+
+    getAtecResultByArea = async () => {
+        const query = `
+        select avaliation.id, sum(item.score) as score_total, avaliation.created_at from client inner join avaliation on avaliation.client = client.id inner join answer on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id
+        where client.id = 4 and question.area ilike 'Fala/Linguagem/Comunicação' 
+        group by avaliation.id  order by avaliation.created_at desc limit 7;
+        `
+
+        const query2 = `select avaliation.id, sum(item.score) as score_total, avaliation.created_at from client inner join avaliation on avaliation.client = client.id inner join answer on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id
+        where client.id = 4 and question.area ilike 'Fala/Linguagem/Comunicação' 
+        group by avaliation.id, avaliation.created_at order by avaliation.created_at desc limit 7;`
         
+        return query
+
     }
 
     listTest = async (skip: number, take: number): Promise<test[]> => {
@@ -62,7 +77,7 @@ export class TestRepository {
         name: string,
         description: string,
         imageurl: string
-    ): Promise<test> => {        
+    ): Promise<test> => {
         const test_result = await prisma.test.create({
             data: {
                 name: name,
@@ -76,8 +91,8 @@ export class TestRepository {
 
 
     updateTest = async (id: number, name: string, description: string, imageurl: string): Promise<test> => {
-        
-        
+
+
         const updatedTest = await prisma.test.update({
             where: {
                 id: id,
