@@ -15,7 +15,7 @@ export class AtecController {
 
     atecResultById = async (req: Request, res: Response) => {
         const result = await this.test.getAtecResultById(7)
-        return result
+        return res.json(result).status(200)
     }
     
 
