@@ -33,11 +33,12 @@ export class TestRepository {
     getAtecResultByAvaliationId = async (avaliationId: number): Promise<string> => {
         const query = "select question.area, sum(item.score) from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = 7 group by question.area;"
         const result = await prisma.$queryRaw`select question.area, sum(item.score) from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = ${avaliationId} group by question.area;`
+        console.log(result)
         if (!result) {
             throw new DatabaseError("Coudnot connect to the database")
             
         }
-        return (query)
+        return (result as string)
     }
 
     getAtecResultByArea = async () => {
