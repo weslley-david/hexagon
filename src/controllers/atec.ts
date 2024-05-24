@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { TestService } from "../services/test";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
+import { AtecResult } from "../entities/repository/test";
 
 export class AtecController {
     constructor(
@@ -14,8 +15,7 @@ export class AtecController {
     }
 
     atecResultById = async (req: Request, res: Response) => {
-        const result = await this.test.getAtecResultById(7)
-        console.log('controller: ' + result)
+        const result: AtecResult[] = await this.test.getAtecResultById(7)
         return res.json(result).status(200)
     }
     

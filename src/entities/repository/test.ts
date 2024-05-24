@@ -2,6 +2,12 @@ import { test } from "@prisma/client"
 import { prisma } from "../database";
 import { DatabaseError } from "../../errors";
 
+export interface AtecResult {
+    area: string;
+    pontuation: number;
+};
+
+
 export class TestRepository {
 
     getAtec = async () => {
@@ -21,7 +27,6 @@ export class TestRepository {
                 item_item_questionToquestion: {}
             },
         });
-        console.log(questions)
 
         if (!questions) {
             throw new DatabaseError("No questions associated");
@@ -30,11 +35,14 @@ export class TestRepository {
 
     }
 
-    getAtecResultByAvaliationId = async (avaliationId: number): Promise<string> => {
+    getAtecResultByAvaliationId = async (avaliationId: number): Promise<AtecResult[]> => {
         const query = "select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = 7 group by question.area;"
-        const result = await prisma.$queryRaw`select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = ${avaliationId} group by question.area;`
-        console.log(result)
-        return (result+"")
+        const result = await prisma.$queryRaw<AtecResult[]>`select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = ${avaliationId} group by question.area;`
+
+        if (!result) {
+            throw new DatabaseError("Could not retrieve data from the database");
+        }
+        return (result)
     }
 
     getAtecResultByArea = async () => {
@@ -47,7 +55,7 @@ export class TestRepository {
         const query2 = `select avaliation.id, sum(item.score) as score_total, avaliation.created_at from client inner join avaliation on avaliation.client = client.id inner join answer on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id
         where client.id = 4 and question.area ilike 'Fala/Linguagem/Comunicação' 
         group by avaliation.id, avaliation.created_at order by avaliation.created_at desc limit 7;`
-        
+
         return query
 
     }
