@@ -11,7 +11,7 @@ export class TestService {
     }
 
     getAtecResultById = async (avaliationId: number): Promise<String> => {
-        return await this.getAtecResultById(avaliationId)
+        return await this.testRepository.getAtecResultByAvaliationId(avaliationId)
     }
     
     delete = async (id: number): Promise<void> => {
