@@ -9,7 +9,8 @@ const atecController = new AtecController()
 atecRoutes.get('/', resolver(atecController.getatec))//retorna o teste atec com suas devidas questões
 atecRoutes.post('/submit', resolver(atecController.getatec)) //cadastra uma avaliação com suas respostas
 atecRoutes.get('/recomendations', resolver(atecController.getatec))//retorna as recomendações dado um test id
-atecRoutes.get('/')
+atecRoutes.get('/resultbyavaliationid',resolver(atecController.getatec))//retorna o resultado da avaloação pelo id da avaliação
+atecRoutes.get('/progressbyarea', resolver(atecController.getatec))//retorna o progresso por área nos últimos 7 testes
 
 
 export default atecRoutes

@@ -13,6 +13,10 @@ export class AtecController {
         return res.json(domain).status(200);
     }
 
+    atecResultById = async (req: Request, res: Response) => {
+        const result = await this.test.getatec()
+        return result
+    }
     
 
     
