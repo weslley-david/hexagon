@@ -20,8 +20,8 @@ export class AtecController {
             throw new RequestError('Wrong form fields', validation_result);
         }
 
-        const { id } = req.query;
-        const result: AtecResult[] = await this.test.getAtecResultById(parseInt(id as string))
+        const { client } = req.query;
+        const result: AtecResult[] = await this.test.getAtecResultById(parseInt(client as string))
         return res.json(result).status(200)
     }
     
