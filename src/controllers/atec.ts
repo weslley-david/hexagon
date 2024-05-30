@@ -15,7 +15,13 @@ export class AtecController {
     }
 
     atecResultById = async (req: Request, res: Response) => {
-        const result: AtecResult[] = await this.test.getAtecResultById(7)
+        const validation_result = validationResult(req);
+        if (!validation_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validation_result);
+        }
+
+        const { id } = req.query;
+        const result: AtecResult[] = await this.test.getAtecResultById(parseInt(id as string))
         return res.json(result).status(200)
     }
     
