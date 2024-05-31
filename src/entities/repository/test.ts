@@ -97,7 +97,7 @@ export class TestRepository {
             WHERE client.id = ${client} 
             GROUP BY avaliation.id, question.area, avaliation.created_at 
             ORDER BY avaliation.created_at DESC 
-            LIMIT 40;
+            --LIMIT 40;
         `;
     
         if (!result || result.length === 0) {
