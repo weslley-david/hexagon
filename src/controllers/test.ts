@@ -8,14 +8,14 @@ export class TestController {
         private testService: TestService = new TestService()
     ) { }
 
-    list = async (req: Request, res: Response) => {
+    listAtecTestsByClientId = async (req: Request, res: Response) => {
         const validator_result = validationResult(req);
         if (!validator_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validationResult.arguments);
         }
 
         const { skip, take } = req.query;
-        const result = await this.testService.list(parseInt(skip as string), parseInt(take as string));
+        const result = await this.testService.listAtecTestsByClientId(parseInt(skip as string), parseInt(take as string));
         return res.json(result).status(200);
     };
 

@@ -28,8 +28,8 @@ export class TestService {
         return await this.testRepository.updateTest(id, name, description, imageurl);
     }
 
-    list = async (skip: number, take: number) => {
-        const test: test[] = await this.testRepository.listTest(skip, take)
+    listAtecTestsByClientId = async (skip: number, take: number) => {
+        const test = await this.testRepository.listAtecTestsByClientId(skip, take)
         return (test)
     }
 

@@ -60,18 +60,13 @@ export class TestRepository {
 
     }
 
-    listTest = async (skip: number, take: number): Promise<test[]> => {
-        const test = await prisma.test.findMany({
-            skip: skip,
-            take: take,
-        },
-        )
+    listAtecTestsByClientId = async (skip: number, take: number) => {
+        const result = await prisma.$queryRaw`select avaliation.id, avaliation.title, question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.client = 8 group by question.area, avaliation.id order by avaliation.created_at;`
 
-        if (!test) {
-            throw new DatabaseError("Coud'not recover data");
+        if (!result) {
+            throw new DatabaseError("Could not retrieve data from the database");
         }
-
-        return test
+        return (result)
     }
 
     getTestById = async (id: number): Promise<test> => {
