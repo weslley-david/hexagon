@@ -10,6 +10,7 @@ export interface AreaScore {
 interface Evaluation {
     id: number;
     title: string;
+    created_at: string;
     areas: AreaScore[];
 }
 
@@ -67,11 +68,12 @@ export class TestRepository {
     }
 
     listAtecTestsByClientId = async (skip: number, take: number, client: number): Promise<Evaluation[]> => {
-        const result: { id: number; title: string; area: string; pontuation: string }[] = await prisma.$queryRaw`
+        const result: { id: number; title: string; area: string; pontuation: string , created_at: string}[] = await prisma.$queryRaw`
             SELECT 
                 avaliation.id, 
                 avaliation.title, 
-                question.area, 
+                question.area,
+                avaliation.created_at
                 SUM(item.score) AS pontuation 
             FROM answer 
             INNER JOIN avaliation ON answer.avaliation = avaliation.id 
@@ -89,11 +91,12 @@ export class TestRepository {
 
         // Combine the scores by evaluation ID and area
         const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
-            const { id, title, area, pontuation } = cur;
+            const { id, title, area, pontuation, created_at } = cur;
             if (!acc[id]) {
                 acc[id] = {
                     id,
                     title,
+                    created_at,
                     areas: []
                 };
             }
