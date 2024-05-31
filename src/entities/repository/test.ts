@@ -82,8 +82,9 @@ export class TestRepository {
             WHERE avaliation.client = ${client} 
             GROUP BY question.area, avaliation.id, avaliation.created_at
             ORDER BY avaliation.created_at
-            OFFSET ${skip} LIMIT ${take};
+            
         `;
+        //OFFSET ${skip} LIMIT ${take};
     
         if (!result || result.length === 0) {
             throw new Error("Could not retrieve data from the database");
