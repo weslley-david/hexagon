@@ -1,5 +1,5 @@
 import { test } from "@prisma/client"
-import { AtecResult, TestRepository } from "../entities/repository/test"
+import { AreaScore, TestRepository } from "../entities/repository/test"
 
 
 export class TestService {
@@ -11,8 +11,8 @@ export class TestService {
         return await this.testRepository.getAtec();   
     }
 
-    getAtecResultById = async (avaliationId: number): Promise<AtecResult[]> => {
-        const result: AtecResult[] =  await this.testRepository.getAtecResultByAvaliationId(avaliationId)
+    getAtecResultById = async (avaliationId: number): Promise<AreaScore[]> => {
+        const result: AreaScore[] =  await this.testRepository.getAtecResultByAvaliationId(avaliationId)
         return result
     }
     

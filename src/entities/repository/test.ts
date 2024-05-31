@@ -2,10 +2,16 @@ import { test } from "@prisma/client"
 import { prisma } from "../database";
 import { DatabaseError } from "../../errors";
 
-export interface AtecResult {
+export interface AreaScore {
     area: string;
-    pontuation: number;
+    pontuation: string;
 };
+
+interface Evaluation {
+    id: number;
+    title: string;
+    areas: AreaScore[];
+}
 
 
 export class TestRepository {
@@ -35,9 +41,9 @@ export class TestRepository {
 
     }
 
-    getAtecResultByAvaliationId = async (avaliationId: number): Promise<AtecResult[]> => {
+    getAtecResultByAvaliationId = async (avaliationId: number): Promise<AreaScore[]> => {
         const query = "select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = 7 group by question.area;"
-        const result = await prisma.$queryRaw<AtecResult[]>`select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = ${avaliationId} group by question.area;`
+        const result = await prisma.$queryRaw<AreaScore[]>`select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = ${avaliationId} group by question.area;`
 
         if (!result) {
             throw new DatabaseError("Could not retrieve data from the database");
@@ -60,14 +66,43 @@ export class TestRepository {
 
     }
 
-    listAtecTestsByClientId = async (skip: number, take: number) => {
-        const result = await prisma.$queryRaw`select avaliation.id, avaliation.title, question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.client = 8 group by question.area, avaliation.id order by avaliation.created_at;`
+    listAtecTestsByClientId = async (skip: number, take: number): Promise<Evaluation[]> => {
+        const result: { id: number; title: string; area: string; pontuation: string }[] = await prisma.$queryRaw`
+            SELECT 
+                avaliation.id, 
+                avaliation.title, 
+                question.area, 
+                SUM(item.score) AS pontuation 
+            FROM answer 
+            INNER JOIN avaliation ON answer.avaliation = avaliation.id 
+            INNER JOIN question ON answer.question = question.id 
+            INNER JOIN item ON answer.item = item.id 
+            WHERE avaliation.client = 8 
+            GROUP BY question.area, avaliation.id 
+            ORDER BY avaliation.created_at;
+        `;
 
-        if (!result) {
-            throw new DatabaseError("Could not retrieve data from the database");
+        if (!result || result.length === 0) {
+            throw new Error("Could not retrieve data from the database");
         }
-        return (result)
-    }
+
+        // Combine the scores by evaluation ID and area
+        const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
+            const { id, title, area, pontuation } = cur;
+            if (!acc[id]) {
+                acc[id] = {
+                    id,
+                    title,
+                    areas: []
+                };
+            }
+            acc[id].areas.push({ area, pontuation });
+            return acc;
+        }, {});
+
+        // Convert the object back to an array
+        return Object.values(combinedResult);
+    };
 
     getTestById = async (id: number): Promise<test> => {
         const test = await prisma.test.findUnique({ where: { id: id } })

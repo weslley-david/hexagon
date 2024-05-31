@@ -2,7 +2,7 @@ import { validationResult } from "express-validator";
 import { TestService } from "../services/test";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
-import { AtecResult } from "../entities/repository/test";
+import { AreaScore } from "../entities/repository/test";
 
 export class AtecController {
     constructor(
@@ -21,7 +21,7 @@ export class AtecController {
         }
 
         const { client } = req.query;
-        const result: AtecResult[] = await this.test.getAtecResultById(parseInt(client as string))
+        const result: AreaScore[] = await this.test.getAtecResultById(parseInt(client as string))
         return res.json(result).status(200)
     }
     
