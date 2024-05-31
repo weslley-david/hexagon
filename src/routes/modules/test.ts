@@ -9,6 +9,7 @@ const testController = new TestController()
 testRoutes.get('/listatectestsbyclientid',
     query('skip').isInt(),
     query('take').isInt(),
+    query('client').isInt(),
     resolver(testController.listAtecTestsByClientId))
 
 testRoutes.get('/:id',resolver(testController.detail))

@@ -14,8 +14,8 @@ export class TestController {
             throw new RequestError('Wrong form fields', validationResult.arguments);
         }
 
-        const { skip, take } = req.query;
-        const result = await this.testService.listAtecTestsByClientId(parseInt(skip as string), parseInt(take as string));
+        const { skip, take, client} = req.query;
+        const result = await this.testService.listAtecTestsByClientId(parseInt(skip as string), parseInt(take as string), parseInt(client as string));
         return res.json(result).status(200);
     };
 

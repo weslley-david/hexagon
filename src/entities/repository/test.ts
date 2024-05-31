@@ -66,7 +66,7 @@ export class TestRepository {
 
     }
 
-    listAtecTestsByClientId = async (skip: number, take: number): Promise<Evaluation[]> => {
+    listAtecTestsByClientId = async (skip: number, take: number, client: number): Promise<Evaluation[]> => {
         const result: { id: number; title: string; area: string; pontuation: string }[] = await prisma.$queryRaw`
             SELECT 
                 avaliation.id, 
@@ -77,9 +77,10 @@ export class TestRepository {
             INNER JOIN avaliation ON answer.avaliation = avaliation.id 
             INNER JOIN question ON answer.question = question.id 
             INNER JOIN item ON answer.item = item.id 
-            WHERE avaliation.client = 8 
+            WHERE avaliation.client = ${client} 
             GROUP BY question.area, avaliation.id 
-            ORDER BY avaliation.created_at;
+            ORDER BY avaliation.created_at
+            OFFSET ${skip} LIMIT ${take};
         `;
 
         if (!result || result.length === 0) {
