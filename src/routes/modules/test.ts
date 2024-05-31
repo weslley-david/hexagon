@@ -12,9 +12,13 @@ testRoutes.get('/listatectestsbyclientid',
     query('client').isInt(),
     resolver(testController.listAtecTestsByClientId))
 
-testRoutes.get('/:id',resolver(testController.detail))
-testRoutes.post('/',resolver(testController.create))
-testRoutes.put('/:id',resolver(testController.update))
-testRoutes.delete('/:id',resolver(testController.delete))
+testRoutes.get('/listevolutionbyarea',
+    query('client').isInt(),
+    resolver(testController.listEvolutionByArea))
+
+testRoutes.get('/:id', resolver(testController.detail))
+testRoutes.post('/', resolver(testController.create))
+testRoutes.put('/:id', resolver(testController.update))
+testRoutes.delete('/:id', resolver(testController.delete))
 
 export default testRoutes

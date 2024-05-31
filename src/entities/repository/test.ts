@@ -14,6 +14,22 @@ interface Evaluation {
     areas: AreaScore[];
 }
 
+interface RawResult {
+    id: number;
+    area: string;
+    score_total: string;
+    created_at: string;
+}
+
+interface AreaScoreAlt {
+    area: string;
+    score: number[];
+}
+
+interface Evolution {
+    evolution: AreaScoreAlt[];
+}
+
 
 export class TestRepository {
 
@@ -66,6 +82,45 @@ export class TestRepository {
         return query
 
     }
+    listEvolutionByArea = async (client: number): Promise<Evolution> => {
+        const result: RawResult[] = await prisma.$queryRaw`
+            SELECT 
+                avaliation.id, 
+                question.area, 
+                SUM(item.score) AS score_total, 
+                avaliation.created_at 
+            FROM client 
+            INNER JOIN avaliation ON avaliation.client = client.id 
+            INNER JOIN answer ON answer.avaliation = avaliation.id 
+            INNER JOIN question ON answer.question = question.id 
+            INNER JOIN item ON answer.item = item.id 
+            WHERE client.id = ${client} 
+            GROUP BY avaliation.id, question.area, avaliation.created_at 
+            ORDER BY avaliation.created_at DESC 
+            LIMIT 40;
+        `;
+    
+        if (!result || result.length === 0) {
+            throw new Error("Could not retrieve data from the database");
+        }
+    
+        // Transform the result into the desired format
+        const groupedResults = result.reduce<{ [key: string]: AreaScoreAlt }>((acc, cur) => {
+            const { area, score_total } = cur;
+            if (!acc[area]) {
+                acc[area] = {
+                    area,
+                    score: []
+                };
+            }
+            acc[area].score.push(parseFloat(score_total));
+            return acc;
+        }, {});
+    
+        return {
+            evolution: Object.values(groupedResults)
+        };
+    };
 
     listAtecTestsByClientId = async (skip: number, take: number, client: number): Promise<Evaluation[]> => {
         const result: { id: number; title: string; area: string; pontuation: string, created_at: string }[] = await prisma.$queryRaw`

@@ -15,6 +15,10 @@ export class TestService {
         const result: AreaScore[] =  await this.testRepository.getAtecResultByAvaliationId(avaliationId)
         return result
     }
+    listEvolutionByArea = async (id: number) => {
+        const test = await this.testRepository.listEvolutionByArea(id)
+        return (test)
+    }
     
     delete = async (id: number): Promise<void> => {
         await this.testRepository.deleteTest(id);

@@ -18,6 +18,11 @@ export class TestController {
         const result = await this.testService.listAtecTestsByClientId(parseInt(skip as string), parseInt(take as string), parseInt(client as string));
         return res.json(result).status(200);
     };
+    listEvolutionByArea = async (req: Request, res: Response) => {
+        const { client } = req.query;
+        const domain = await this.testService.listEvolutionByArea(parseInt(client as string));
+        return res.json(domain).status(200);
+    }
 
     detail = async (req: Request, res: Response) => {
         const { id } = req.params;
