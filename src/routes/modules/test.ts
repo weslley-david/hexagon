@@ -6,7 +6,7 @@ import { body, param, query } from 'express-validator';
 const testRoutes = Router()
 
 const testController = new TestController()
-testRoutes.get('/list',
+testRoutes.get('/listatectestsbyclientid',
     query('skip').isInt(),
     query('take').isInt(),
     resolver(testController.listAtecTestsByClientId))
