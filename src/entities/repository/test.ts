@@ -68,27 +68,27 @@ export class TestRepository {
     }
 
     listAtecTestsByClientId = async (skip: number, take: number, client: number): Promise<Evaluation[]> => {
-        const result: { id: number; title: string; area: string; pontuation: string , created_at: string}[] = await prisma.$queryRaw`
+        const result: { id: number; title: string; area: string; pontuation: string, created_at: string }[] = await prisma.$queryRaw`
             SELECT 
                 avaliation.id, 
                 avaliation.title, 
                 question.area,
-                avaliation.created_at
+                avaliation.created_at,
                 SUM(item.score) AS pontuation 
             FROM answer 
             INNER JOIN avaliation ON answer.avaliation = avaliation.id 
             INNER JOIN question ON answer.question = question.id 
             INNER JOIN item ON answer.item = item.id 
             WHERE avaliation.client = ${client} 
-            GROUP BY question.area, avaliation.id 
+            GROUP BY question.area, avaliation.id, avaliation.created_at
             ORDER BY avaliation.created_at
             OFFSET ${skip} LIMIT ${take};
         `;
-
+    
         if (!result || result.length === 0) {
             throw new Error("Could not retrieve data from the database");
         }
-
+    
         // Combine the scores by evaluation ID and area
         const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
             const { id, title, area, pontuation, created_at } = cur;
@@ -103,7 +103,7 @@ export class TestRepository {
             acc[id].areas.push({ area, pontuation });
             return acc;
         }, {});
-
+    
         // Convert the object back to an array
         return Object.values(combinedResult);
     };
