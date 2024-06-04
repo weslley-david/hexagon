@@ -9,8 +9,16 @@ const atecController = new AtecController()
 atecRoutes.get('/', resolver(atecController.getatec))//retorna o teste atec com suas devidas questões
 atecRoutes.post('/submit', resolver(atecController.getatec)) //cadastra uma avaliação com suas respostas
 atecRoutes.get('/recomendations', resolver(atecController.getatec))//retorna as recomendações dado um test id
-atecRoutes.get('/resultbyavaliationid',query('client').isInt(),resolver(atecController.atecResultById))//retorna o resultado da avaloação pelo id da avaliação
+atecRoutes.get('/resultbyavaliationid', query('client').isInt(), resolver(atecController.atecResultById))//retorna o resultado da avaloação pelo id da avaliação
 atecRoutes.get('/progressbyarea', resolver(atecController.getatec))//retorna o progresso por área nos últimos 7 testes
+atecRoutes.get('/listatectestsbyclientid',
+    query('skip').isInt(),
+    query('take').isInt(),
+    query('client').isInt(),
+    resolver(atecController.listAtecTestsByClientId))
 
+atecRoutes.get('/listevolutionbyarea',
+    query('client').isInt(),
+    resolver(atecController.listEvolutionByArea))
 
 export default atecRoutes

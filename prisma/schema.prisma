@@ -45,6 +45,7 @@ model client {
   code                                               String?             @db.VarChar(7)
   created_at                                         DateTime?           @default(now()) @db.Timestamp(6)
   updated_at                                         DateTime?           @default(now()) @db.Timestamp(6)
+  gender                                             gender_choices?
   avaliation_avaliation_clientToclient               avaliation[]        @relation("avaliation_clientToclient")
   client_guardian_client_guardian_clientToclient     client_guardian[]   @relation("client_guardian_clientToclient")
   client_specialist_client_specialist_clientToclient client_specialist[] @relation("client_specialist_clientToclient")
@@ -120,6 +121,7 @@ model question {
   test                                                     Int
   created_at                                               DateTime?            @default(now()) @db.Timestamp(6)
   updated_at                                               DateTime?            @default(now()) @db.Timestamp(6)
+  area                                                     String?
   answer_answer_questionToquestion                         answer[]             @relation("answer_questionToquestion")
   item_item_questionToquestion                             item[]               @relation("item_questionToquestion")
   test_question_testTotest                                 test                 @relation("question_testTotest", fields: [test], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -159,6 +161,7 @@ model specialist {
   birthdate                                                        DateTime?              @db.Date
   created_at                                                       DateTime?              @default(now()) @db.Timestamp(6)
   updated_at                                                       DateTime?              @default(now()) @db.Timestamp(6)
+  specialty                                                        String?
   avaliation_avaliation_specialistTospecialist                     avaliation[]           @relation("avaliation_specialistTospecialist")
   client_specialist_client_specialist_specialistTospecialist       client_specialist[]    @relation("client_specialist_specialistTospecialist")
   specialist_council_specialist_council_specialistTospecialist     specialist_council[]   @relation("specialist_council_specialistTospecialist")
@@ -202,4 +205,10 @@ model test {
   updated_at                       DateTime?    @default(now()) @db.Timestamp(6)
   avaliation_avaliation_testTotest avaliation[] @relation("avaliation_testTotest")
   question_question_testTotest     question[]   @relation("question_testTotest")
+}
+
+enum gender_choices {
+  masculino
+  feminino
+  outro
 }

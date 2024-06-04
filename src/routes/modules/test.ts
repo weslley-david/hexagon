@@ -6,15 +6,6 @@ import { body, param, query } from 'express-validator';
 const testRoutes = Router()
 
 const testController = new TestController()
-testRoutes.get('/listatectestsbyclientid',
-    query('skip').isInt(),
-    query('take').isInt(),
-    query('client').isInt(),
-    resolver(testController.listAtecTestsByClientId))
-
-testRoutes.get('/listevolutionbyarea',
-    query('client').isInt(),
-    resolver(testController.listEvolutionByArea))
 
 testRoutes.get('/:id', resolver(testController.detail))
 testRoutes.post('/', resolver(testController.create))

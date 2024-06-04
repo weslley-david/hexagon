@@ -25,6 +25,20 @@ export class AtecController {
         return res.json(result).status(200)
     }
     
+    listAtecTestsByClientId = async (req: Request, res: Response) => {
+        const validator_result = validationResult(req);
+        if (!validator_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validationResult.arguments);
+        }
 
+        const { skip, take, client} = req.query;
+        const result = await this.test.listAtecTestsByClientId(parseInt(skip as string), parseInt(take as string), parseInt(client as string));
+        return res.json(result).status(200);
+    };
+    listEvolutionByArea = async (req: Request, res: Response) => {
+        const { client } = req.query;
+        const domain = await this.test.listEvolutionByArea(parseInt(client as string));
+        return res.json(domain).status(200);
+    }
     
 }

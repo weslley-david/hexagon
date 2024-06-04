@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "gender_choices" AS ENUM ('masculino', 'feminino', 'outro');
+
 -- CreateTable
 CREATE TABLE "answer" (
     "id" SERIAL NOT NULL,
@@ -35,6 +38,7 @@ CREATE TABLE "client" (
     "code" VARCHAR(7),
     "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
+    "gender" "gender_choices",
 
     CONSTRAINT "client_pkey" PRIMARY KEY ("id")
 );
@@ -119,6 +123,7 @@ CREATE TABLE "question" (
     "test" INTEGER NOT NULL,
     "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
+    "area" TEXT,
 
     CONSTRAINT "question_pkey" PRIMARY KEY ("id")
 );
@@ -158,6 +163,7 @@ CREATE TABLE "specialist" (
     "birthdate" DATE,
     "created_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
+    "specialty" TEXT,
 
     CONSTRAINT "specialist_pkey" PRIMARY KEY ("id")
 );

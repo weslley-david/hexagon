@@ -6,7 +6,7 @@ export class TestService {
     constructor(
         private testRepository: TestRepository = new TestRepository()
     ) { }
-
+    //--------------------ATEC
     getatec = async () => {
         return await this.testRepository.getAtec();   
     }
@@ -41,6 +41,6 @@ export class TestService {
         const test: test = await this.testRepository.createTest(name, description, imageurl)
         return (test)
     }
-
+    //----------------------
 
 }

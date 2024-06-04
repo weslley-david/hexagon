@@ -4,7 +4,6 @@ import clientRoutes from "./modules/client";
 import specialistRoutes from "./modules/specialist";
 import testRoutes from "./modules/test";
 import questionRoutes from "./modules/question";
-import question_DomainRoutes from "./modules/questionDomain";
 import itemRoutes from "./modules/item";
 import question_Sugestion from "./modules/questionSugestion";
 import avaliationRoutes from "./modules/avaliation";
@@ -19,7 +18,6 @@ router.use('/client', clientRoutes)
 router.use('/specialist', specialistRoutes)
 router.use('/test', testRoutes)
 router.use('/question', questionRoutes)
-router.use('/questiondomain', question_DomainRoutes)
 router.use('/item', itemRoutes)
 router.use('/questionsugestion', question_Sugestion)
 router.use('/avaliation', avaliationRoutes)
