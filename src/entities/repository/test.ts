@@ -96,7 +96,7 @@ export class TestRepository {
             INNER JOIN item ON answer.item = item.id 
             WHERE client.id = ${client} 
             GROUP BY avaliation.id, question.area, avaliation.created_at 
-            ORDER BY avaliation.created_at DESC 
+            ORDER BY avaliation.created_at ASC
             --LIMIT 40;
         `;
     
