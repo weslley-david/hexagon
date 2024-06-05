@@ -1,8 +1,10 @@
 import { validationResult } from "express-validator";
 import { TestService } from "../services/test";
 import { Request, Response } from "express";
-import { RequestError } from "../errors";
+import { DatabaseError, RequestError } from "../errors";
 import { AreaScore } from "../entities/repository/test";
+import { prisma } from "../entities/database";
+import { avaliation } from "@prisma/client";
 
 export class AtecController {
     constructor(
@@ -43,6 +45,34 @@ export class AtecController {
         const { client } = req.query;
         const domain = await this.test.listEvolutionByArea(parseInt(client as string));
         return res.json(domain).status(200);
+    }
+
+    //---------------------------------SUBMIT ATEC
+    /* Tudo será feito aqui no controller por enquanto*/
+
+    submit = async (req: Request, res: Response) => {
+        const { client, title, notes, answers } = req.body
+        const id = res.locals.id
+
+        //TODO: buscar o teste pelo nome para certificar o id
+        const test_submission: avaliation = await prisma.avaliation.create({
+            data: {
+                test: 1,
+                title: title,
+                notes: notes,
+                client: client,
+                specialist: parseInt(id),
+                answer_answer_avaliationToavaliation: {
+                    create: answers,
+                }
+            },
+        })
+        if (!test_submission) {
+            throw new DatabaseError("falha ao submeter o formulário");
+
+        }
+        return res.json(test_submission).status(200)
+
     }
 
 }

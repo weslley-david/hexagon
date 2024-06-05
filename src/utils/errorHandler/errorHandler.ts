@@ -5,6 +5,7 @@ import { AcessDeniedError, DatabaseError, DomainLogicError, InteralServerError, 
 export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
     if (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            console.log(error)
             res.status(500).json({
                 "msg": "Database Error."
             })

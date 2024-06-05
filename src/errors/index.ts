@@ -4,7 +4,7 @@ export class InteralServerError extends Error {
     statusCode: number
     constructor(msg: string) {
         super(msg)
-        this.name = 'InteralServerError'
+        this.name = 'Interal Server Error'
         this.statusCode = 500
     }
 }
@@ -13,7 +13,7 @@ export class DomainLogicError extends Error {
     statusCode: number
     constructor(msg: string) {
         super(msg)
-        this.name = 'InteralServerError'
+        this.name = 'Domain Logic Error'
         this.statusCode = 500
     }
 }
@@ -22,7 +22,7 @@ export class AcessDeniedError extends Error {
     statusCode: number
     constructor(msg: string) {
         super(msg)
-        this.name = 'Request Error'
+        this.name = 'Unauthorised Error'
         this.statusCode = 403
     }
 }
@@ -31,7 +31,7 @@ export class DatabaseError extends Error {
     statusCode: number
     constructor(msg: string) {
         super(msg)
-        this.name = 'InteralServerError'
+        this.name = 'Database Error'
         this.statusCode = 500
     }
 }
