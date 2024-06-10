@@ -21,7 +21,7 @@ atecRoutes.post('/submit',
 
 atecRoutes.get('/recomendations', resolver(atecController.getatec))//retorna as recomendações dado um test id
 
-atecRoutes.get('/resultbyavaliationid',
+atecRoutes.get('/resultbyclientid',
     query('client').isInt(),
     resolver(atecController.atecResultById))//retorna o resultado da avaloação pelo id da avaliação
 
