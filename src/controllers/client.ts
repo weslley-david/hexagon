@@ -1,13 +1,14 @@
 import { body, validationResult } from "express-validator";
 import { ClientService } from "../services/client";
-import { ClientGuardianService } from "../services/clientGuardian";
+
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
+import { RelationService } from "../services/relation";
 
 export class ClientController {
     constructor(
         private clientService: ClientService = new ClientService(),
-        private clientGuardianService: ClientGuardianService = new ClientGuardianService()
+        private relationService: RelationService = new RelationService()
     ) { }
 
     list = async (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export class ClientController {
             throw new RequestError('Wrong form fields', validationResult.arguments);
         }
 
-        const { skip, take, specialist} = req.query;
+        const { skip, take, specialist } = req.query;
         const result = await this.clientService.list(parseInt(skip as string), parseInt(take as string), parseInt(specialist as string));
         return res.json(result).status(200);
     };
@@ -32,7 +33,7 @@ export class ClientController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const { identifier, name, bio, imageurl, birthdate} = req.body;
+        const { identifier, name, bio, imageurl, birthdate } = req.body;
         const id = res.locals.id
         const birthDate = new Date(birthdate);
         const result = await this.clientService.create(
@@ -42,8 +43,8 @@ export class ClientController {
             imageurl,
             birthDate
         );
-        if (result.id){
-            this.clientGuardianService.createClient_Guardian(result.id, id)
+        if (result) {
+            this.relationService.createGuardianRelation(result.code as string, result.identifier, id)
         }
 
         return res.json(result).status(201);
@@ -54,7 +55,7 @@ export class ClientController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const {identifier, name, bio, email, password, imageurl, birthdate, code} = req.body;
+        const { identifier, name, bio, email, password, imageurl, birthdate, code } = req.body;
         const id = req.params.id;
 
         const birthDate = new Date(birthdate);
@@ -90,10 +91,10 @@ export class ClientController {
             throw new RequestError('Wrong form fields', validation_result);
         }
         const id = res.locals.id
-        const { skip, take} = req.query;
+        const { skip, take } = req.query;
         const result = await this.clientService.getBySpecialist(id, parseInt(skip as string), parseInt(take as string))
         return res.json(result).status(200)
-        
+
     }
 
     getByGuardian = async (req: Request, res: Response) => {
@@ -102,7 +103,7 @@ export class ClientController {
             throw new RequestError('Wrong form fields', validation_result);
         }
         const id = res.locals.id
-        const { skip, take} = req.query;
+        const { skip, take } = req.query;
         const result = await this.clientService.getByGuardian(id, parseInt(skip as string), parseInt(take as string))
         return res.json(result).status(200)
     }

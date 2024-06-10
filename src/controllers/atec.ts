@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { TestService } from "../services/test";
+import { TestService } from "../services/atec";
 import { Request, Response } from "express";
 import { DatabaseError, RequestError } from "../errors";
 import { AreaScore } from "../entities/repository/test";

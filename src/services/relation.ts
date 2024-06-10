@@ -1,4 +1,4 @@
-import { question } from "@prisma/client"
+import { client_guardian, question } from "@prisma/client"
 import { Client_SpecialistRepository } from "../entities/repository/clientSpecialist"
 import { Client_GuardianRepository } from "../entities/repository/clientGuardian"
 import { ClientRepository } from "../entities/repository/client"

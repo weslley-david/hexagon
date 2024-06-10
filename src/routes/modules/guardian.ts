@@ -19,5 +19,5 @@ guardianRoutes.get('/byclient',
     query('client').isInt(), 
     resolver(guardianController.getGuardiansByClientId))
 
-guardianRoutes.get('/:id', param('id').isNumeric(), resolver(guardianController.detail))
+//guardianRoutes.get('/:id', param('id').isNumeric(), resolver(guardianController.detail))
 export default guardianRoutes

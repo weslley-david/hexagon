@@ -6,7 +6,6 @@ export class TestService {
     constructor(
         private testRepository: TestRepository = new TestRepository()
     ) { }
-    //--------------------ATEC
     getatec = async () => {
         return await this.testRepository.getAtec();   
     }
@@ -19,7 +18,12 @@ export class TestService {
         const test = await this.testRepository.listEvolutionByArea(id)
         return (test)
     }
-    
+
+    listAtecTestsByClientId = async (skip: number, take: number, client: number) => {
+        const test = await this.testRepository.listAtecTestsByClientId(skip, take, client)
+        return (test)
+    }
+
     delete = async (id: number): Promise<void> => {
         await this.testRepository.deleteTest(id);
     }
@@ -30,11 +34,6 @@ export class TestService {
     }
     update = async (id: number, name: string, description: string, imageurl: string): Promise<test> => {
         return await this.testRepository.updateTest(id, name, description, imageurl);
-    }
-
-    listAtecTestsByClientId = async (skip: number, take: number, client: number) => {
-        const test = await this.testRepository.listAtecTestsByClientId(skip, take, client)
-        return (test)
     }
 
     create = async ( name: string, description: string, imageurl: string) => {

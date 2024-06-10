@@ -3,6 +3,7 @@ import { SpecialistRepository } from "../entities/repository/specialist"
 import { ClientRepository } from "../entities/repository/client";
 import { generateTokens } from "../utils/generateTokens";
 import { encryptPassword } from "../utils/encryptor";
+import { DomainLogicError } from "../errors";
 
 export class SpecialistService {
     constructor(
@@ -50,9 +51,8 @@ export class SpecialistService {
         
     }
 
-    create = async (  identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date, crm: string) => {
-        
-        const specialist: specialist = await this.specialistRepository.createSpecialist(identifier, name, bio, email, password, imageurl, birthdate, crm)
+    create = async (  identifier: string, name: string, bio: string, email: string, password: string, imageurl: string, birthdate: Date, crm: string, specialty: string) => {
+        const specialist: specialist = await this.specialistRepository.createSpecialist(identifier, name, bio, email, password, imageurl, birthdate, crm, specialty)
         return (specialist)
     }
 }

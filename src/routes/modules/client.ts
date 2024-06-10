@@ -8,10 +8,10 @@ import { GuardianMiddleware } from "../../utils/middlewares/Guardian";
 const clientRoutes = Router()
 
 const clientController = new ClientController()
-clientRoutes.get('/list',
-    query('skip').isInt(),
-    query('take').isInt(),
-    resolver(clientController.list))
+// clientRoutes.get('/list',
+//     query('skip').isInt(),
+//     query('take').isInt(),
+//     resolver(clientController.list))
 
 clientRoutes.get('/byspecialist', 
     query('skip').isInt(),
@@ -24,7 +24,7 @@ clientRoutes.get('/byguardian',
     GuardianMiddleware,
     resolver(clientController.getByGuardian))
 clientRoutes.get('/:id', resolver(clientController.detail))
-clientRoutes.post('/', resolver(clientController.create))
+clientRoutes.post('/', GuardianMiddleware, resolver(clientController.create))
 clientRoutes.put('/:id', resolver(clientController.update))
 clientRoutes.delete('/:id', resolver(clientController.delete))
 

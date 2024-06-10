@@ -50,7 +50,7 @@ export class SpecialistController {
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
-        const { identifier, name, bio, email, password, imageurl, birthdate, crm } = req.body;
+        const { identifier, name, bio, email, password, imageurl, birthdate, crm, specialty} = req.body;
         const birthDate = new Date(birthdate);
         const result = await this.specialistService.create(
             identifier,
@@ -60,7 +60,8 @@ export class SpecialistController {
             encryptPassword(password),
             imageurl,
             birthDate,
-            crm
+            crm,
+            specialty
         );
 
         return res.json(result).status(201);
