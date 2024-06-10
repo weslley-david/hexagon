@@ -58,9 +58,15 @@ export class TestRepository {
 
     }
 
-    getAtecResultByAvaliationId = async (avaliationId: number): Promise<AreaScore[]> => {
-        const query = "select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = 7 group by question.area;"
-        const result = await prisma.$queryRaw<AreaScore[]>`select question.area, sum(item.score) as pontuation from answer inner join avaliation on answer.avaliation = avaliation.id inner join question on answer.question = question.id inner join item on answer.item = item.id where avaliation.id = ${avaliationId} group by question.area;`
+    getAtecResultByAvaliationId = async (client: number): Promise<AreaScore[]> => {
+        const result = await prisma.$queryRaw<AreaScore[]>`SELECT question.area, SUM(item.score) AS pontuation 
+        FROM answer 
+        INNER JOIN avaliation ON answer.avaliation = avaliation.id 
+        INNER JOIN question ON answer.question = question.id 
+        INNER JOIN item ON answer.item = item.id 
+        WHERE avaliation.id = (SELECT id FROM avaliation WHERE avaliation.client = 1 ORDER BY avaliation.created_at DESC LIMIT 1) 
+        GROUP BY question.area;
+        `
 
         if (!result) {
             throw new DatabaseError("Could not retrieve data from the database");
@@ -99,11 +105,11 @@ export class TestRepository {
             ORDER BY avaliation.created_at ASC
             --LIMIT 40;
         `;
-    
+
         if (!result || result.length === 0) {
             throw new Error("Could not retrieve data from the database");
         }
-    
+
         // Transform the result into the desired format
         const groupedResults = result.reduce<{ [key: string]: AreaScoreAlt }>((acc, cur) => {
             const { area, score_total } = cur;
@@ -116,7 +122,7 @@ export class TestRepository {
             acc[area].score.push(parseFloat(score_total));
             return acc;
         }, {});
-    
+
         return {
             evolution: Object.values(groupedResults)
         };
@@ -140,11 +146,11 @@ export class TestRepository {
             
         `;
         //OFFSET ${skip} LIMIT ${take};
-    
+
         if (!result || result.length === 0) {
             throw new Error("Could not retrieve data from the database");
         }
-    
+
         // Combine the scores by evaluation ID and area
         const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
             const { id, title, area, pontuation, created_at } = cur;
@@ -159,7 +165,7 @@ export class TestRepository {
             acc[id].areas.push({ area, pontuation });
             return acc;
         }, {});
-    
+
         // Convert the object back to an array
         return Object.values(combinedResult);
     };

@@ -20,14 +20,14 @@ export class AtecController {
         return res.json(domain).status(200);
     }
 
-    atecResultById = async (req: Request, res: Response) => {
+    atecResultByClientId = async (req: Request, res: Response) => {
         const validation_result = validationResult(req);
         if (!validation_result.isEmpty()) {
             throw new RequestError('Wrong form fields', validation_result);
         }
 
         const { client } = req.query;
-        const result: AreaScore[] = await this.test.getAtecResultById(parseInt(client as string))
+        const result: AreaScore[] = await this.test.getAtecResultByClientId(parseInt(client as string))
         return res.json(result).status(200)
     }
 

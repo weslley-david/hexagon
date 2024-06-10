@@ -10,8 +10,8 @@ export class TestService {
         return await this.testRepository.getAtec();   
     }
 
-    getAtecResultById = async (avaliationId: number): Promise<AreaScore[]> => {
-        const result: AreaScore[] =  await this.testRepository.getAtecResultByAvaliationId(avaliationId)
+    getAtecResultByClientId = async (client: number): Promise<AreaScore[]> => {
+        const result: AreaScore[] =  await this.testRepository.getAtecResultByAvaliationId(client)
         return result
     }
     listEvolutionByArea = async (id: number) => {
