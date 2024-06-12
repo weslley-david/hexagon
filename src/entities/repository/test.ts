@@ -166,22 +166,52 @@ export class TestRepository {
         }
 
         // Combine the scores by evaluation ID and area
-        const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
+        // const combinedResult = result.reduce<{ [key: number]: Evaluation }>((acc, cur) => {
+        //     const { id, title, area, pontuation, created_at } = cur;
+        //     if (!acc[id]) {
+        //         acc[id] = {
+        //             id,
+        //             title,
+        //             created_at,
+        //             areas: []
+        //         };
+        //     }
+        //     acc[id].areas.push({ area, pontuation });
+        //     return acc;
+        // }, {});
+
+        // // Convert the object back to an array
+        // return Object.values(combinedResult);
+
+        // Combine the scores by evaluation ID
+        // Combine the scores by evaluation ID
+        const combinedResult: { [key: number]: Evaluation } = {};
+
+        for (const cur of result) {
             const { id, title, area, pontuation, created_at } = cur;
-            if (!acc[id]) {
-                acc[id] = {
+            if (!combinedResult[id]) {
+                combinedResult[id] = {
                     id,
                     title,
                     created_at,
-                    areas: []
+                    areas: [{ area, pontuation }]
                 };
+            } else {
+                combinedResult[id].areas.push({ area, pontuation });
             }
-            acc[id].areas.push({ area, pontuation });
-            return acc;
-        }, {});
+        }
 
         // Convert the object back to an array
-        return Object.values(combinedResult);
+        const combinedArray = Object.values(combinedResult);
+
+        // Sort the combined array by created_at in descending order
+        combinedArray.sort((a, b) => {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
+
+        return combinedArray;
+
+
     };
 
     getTestById = async (id: number): Promise<test> => {
