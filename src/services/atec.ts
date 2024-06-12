@@ -2,7 +2,7 @@ import { test } from "@prisma/client"
 import { AreaScore, TestRepository } from "../entities/repository/test"
 
 
-export class TestService {
+export class AtecService {
     constructor(
         private testRepository: TestRepository = new TestRepository()
     ) { }
@@ -28,8 +28,8 @@ export class TestService {
         await this.testRepository.deleteTest(id);
     }
 
-    detail = async (id: number) => {
-        const test: test = await this.testRepository.getTestById(id)
+    detailAtec = async (id: number) => {
+        const test = await this.testRepository.detailAtecResultByAvaliationId(id)
         return (test)
     }
     update = async (id: number, name: string, description: string, imageurl: string): Promise<test> => {

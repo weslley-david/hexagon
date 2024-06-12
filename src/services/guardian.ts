@@ -12,7 +12,7 @@ export class GuardianService {
 
         if(specialist.password == encryptPassword(password)){
             let [acetoken, reftoken] =  generateTokens(specialist.id, specialist.identifier, "guardian")
-            return ({ "signin": true, "reftoken": reftoken, "acetoken": acetoken, "id": specialist.id, "type": "guardian"})
+            return ({ "signin": true, "reftoken": reftoken, "acetoken": acetoken, "id": specialist.id, "type": "guardian", "identifier": specialist.identifier})
         }
         return ({"signing": false})
     }

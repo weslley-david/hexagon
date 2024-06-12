@@ -64,7 +64,7 @@ export class TestRepository {
         INNER JOIN avaliation ON answer.avaliation = avaliation.id 
         INNER JOIN question ON answer.question = question.id 
         INNER JOIN item ON answer.item = item.id 
-        WHERE avaliation.id = (SELECT id FROM avaliation WHERE avaliation.client = 1 ORDER BY avaliation.created_at DESC LIMIT 1) 
+        WHERE avaliation.id = (SELECT id FROM avaliation WHERE avaliation.client = ${client} ORDER BY avaliation.created_at DESC LIMIT 1) 
         GROUP BY question.area;
         `
 
@@ -73,6 +73,18 @@ export class TestRepository {
         }
         return (result)
     }
+
+    detailAtecResultByAvaliationId = async (avaliation: number) => {
+        const result = await prisma.$queryRaw`select question.number, question.content, item.content as answer, question.area, item.score  from avaliation inner join answer on avaliation.id = answer.avaliation inner join question on question.id = answer.question inner join item on answer.item = item.id where avaliation.id = ${avaliation} order by question.number;
+        `
+
+        if (!result) {
+            throw new DatabaseError("Could not retrieve data from the database");
+        }
+        return (result)
+    }
+
+
 
     getAtecResultByArea = async () => {
         const query = `
@@ -88,6 +100,8 @@ export class TestRepository {
         return query
 
     }
+
+
     listEvolutionByArea = async (client: number): Promise<Evolution> => {
         const result: RawResult[] = await prisma.$queryRaw`
             SELECT 

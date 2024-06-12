@@ -39,4 +39,8 @@ atecRoutes.get('/listevolutionbyarea',
     query('client').isInt(),
     resolver(atecController.listEvolutionByArea))
 
+atecRoutes.get('/answersbyavaliationid',
+    query('id').isInt(),
+    resolver(atecController.answersbyavaliationid))
+
 export default atecRoutes

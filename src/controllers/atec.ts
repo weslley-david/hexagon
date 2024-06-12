@@ -1,5 +1,5 @@
-import { validationResult } from "express-validator";
-import { TestService } from "../services/atec";
+import { Result, validationResult } from "express-validator";
+import { AtecService } from "../services/atec";
 import { Request, Response } from "express";
 import { DatabaseError, RequestError } from "../errors";
 import { AreaScore } from "../entities/repository/test";
@@ -8,7 +8,7 @@ import { avaliation } from "@prisma/client";
 
 export class AtecController {
     constructor(
-        private test: TestService = new TestService()
+        private test: AtecService = new AtecService()
     ) { }
 
     getatec = async (req: Request, res: Response) => {
@@ -73,6 +73,16 @@ export class AtecController {
         }
         return res.json(test_submission).status(200)
 
+    }
+
+    answersbyavaliationid = async (req: Request, res: Response) => {
+        const { id } = req.query;
+        const validator_result = validationResult(req);
+        if (!validator_result.isEmpty()) {
+            throw new RequestError('Wrong form fields', validationResult.arguments);
+        }
+        const result = await this.test.detailAtec(parseInt(id as string))
+        return res.json(result).status(200)
     }
 
 }
