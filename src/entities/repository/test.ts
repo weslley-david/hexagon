@@ -156,7 +156,7 @@ export class TestRepository {
             INNER JOIN item ON answer.item = item.id 
             WHERE avaliation.client = ${client} 
             GROUP BY question.area, avaliation.id, avaliation.created_at
-            ORDER BY avaliation.created_at desc
+            ORDER BY avaliation.created_at asc
             
         `;
         //OFFSET ${skip} LIMIT ${take};
