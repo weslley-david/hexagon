@@ -11,7 +11,7 @@ const relationController = new RelationController();
 
 relationRoutes.post('/specialist', body("code").isString(), body("identifier").isString(),SpecialistMiddleware,resolver(relationController.createspecialist))
 relationRoutes.post('/guardian',body("code").isString(), body("identifier").isString(), GuardianMiddleware ,resolver(relationController.createguardian))
-relationRoutes.delete('/specialist', resolver(relationController.deleteSpecialistRelation))
-relationRoutes.delete('/guaridan', resolver(relationController.deleteGuardianRelation))
+relationRoutes.delete('/specialist', body("client").isString(),resolver(relationController.deleteSpecialistRelation))
+relationRoutes.delete('/guaridan', body("client").isString(),resolver(relationController.deleteGuardianRelation))
 
 export default relationRoutes

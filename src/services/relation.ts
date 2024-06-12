@@ -1,4 +1,4 @@
-import { client_guardian, question } from "@prisma/client"
+import { client, client_guardian, question } from "@prisma/client"
 import { Client_SpecialistRepository } from "../entities/repository/clientSpecialist"
 import { Client_GuardianRepository } from "../entities/repository/clientGuardian"
 import { ClientRepository } from "../entities/repository/client"
@@ -12,12 +12,14 @@ export class RelationService {
         
     ) { }
     
-    deleteClientGuardian = async (client: number, guardian: number) => {
-        return await this.clientGuardianRepository.deleteClient_Guardian(client, guardian)
+    deleteClientGuardian = async (client: string, guardian: number) => {
+        const clientResult: client = await this.clientRepository.getClientByIdentifier(client)
+        return await this.clientGuardianRepository.deleteClient_Guardian(clientResult.id, guardian)
     }
     
-    deleteClientSpecialist = async (client: number, specialist: number) => {
-        return await this.clientSpecialistRepository.deleteClient_Specialist(client, specialist)
+    deleteClientSpecialist = async (client: string, specialist: number) => {
+        const clientResult: client = await this.clientRepository.getClientByIdentifier(client)
+        return await this.clientSpecialistRepository.deleteClient_Specialist(clientResult.id, specialist)
     }
 
     createSpecialistRelation = async ( 

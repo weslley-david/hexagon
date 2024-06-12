@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 import { RequestError } from "../errors";
 import { RelationService } from "../services/relation";
+import { ClientService } from "../services/client";
 
 export class RelationController {
     constructor(
@@ -38,9 +39,9 @@ export class RelationController {
             throw new RequestError('Wrong form fields', validation_result);
         }
 
-        const { client } = req.params;
+        const { client } = req.body;
         const specialist = res.locals.id
-        const result = await this.relationService.deleteClientSpecialist(parseInt(client), parseInt(specialist))
+        const result = await this.relationService.deleteClientSpecialist(client, parseInt(specialist))
         return res.json(result).status(204).send();
     }
 
@@ -50,9 +51,9 @@ export class RelationController {
             throw new RequestError('Wrong form fields', validation_result);
         }
 
-        const { client } = req.params;
+        const { client } = req.body;
         const guardian = res.locals.id
-        const result = await this.relationService.deleteClientGuardian(parseInt(client), parseInt(guardian))
+        const result = await this.relationService.deleteClientGuardian(client, parseInt(guardian))
         return res.json(result).status(204).send();
     }
 }
